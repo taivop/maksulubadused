@@ -1,15 +1,20 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 	<head>
 		<meta charset="utf-8">
 		<title>D3: An HTML div tooltip</title>
 		<script type="text/javascript" src="lib/d3.min.js"></script>
-		<script type="text/javascript" src="d3.slider.js"></script>
-		<link rel="stylesheet" href="d3.slider.css" />  
 		<style type="text/css">
+		
+			div#contents {
+				width: 700px;
+				margin-left: auto;
+				margin-right: auto;
+				margin-top: 100px;
+			}
 
 			rect:hover {
-				fill: orange;
+				fill: gray;
 			}
 			
 			.axis path,
@@ -85,27 +90,58 @@
 		</style>
 	</head>
 	<body>
+		<div id="contents">
 		<svg id="graph"></svg>
 		<svg id="slider"></svg>
 		<div id="tooltip" class="hidden">
-			<p><strong>Important Label Heading</strong></p>
-			<p><span id="value">100</span>%</p>
+			<p><strong>Erakond</strong></p>
+			<p><span id="value">100</span>€</p>
+		</div>
 		</div>
 		<script type="text/javascript">
 		
 			//Data defs
-			function kesk() {
-				var raha = function(bruto) { return 2 * bruto; }
-				var nimi = 
+			var kesk = {
+				fun: function(bruto) { return 2 * bruto; },
+				name: "Keskerakond",
+				color: "#197d63"
+			};
+			
+			var irl = {
+				fun: function(bruto) { return 1.5 * Math.pow(bruto, 0.9); },
+				name: "Isamaa ja Res Publica Liit",
+				color: "#0095ce"
+			};
+			
+			var reform = {
+				fun: function(bruto) { return 0.7 * Math.pow(bruto, 1.2); },
+				name: "Reformierakond",
+				color: "#ffe200"
+			};
+			
+			var sde = {
+				fun: function(bruto) { return 0.8 * 2000 - bruto; },
+				name: "Sotsiaaldemokraatlik Erakond",
+				color: "#aa0b04"
+			};
+			
+			erakonnad = [kesk, irl, reform, sde];
+			
+			
+			//Initial values for dataset
+			initialBruto = 500;
+			dataset = [];
+			
+			for (var i = 0; i < erakonnad.length; i++) {
+				dataset.push(erakonnad[i].fun(initialBruto));
+				//console.log("i=" + i + ", bruto=" + initialBruto);
 			}
 			
 
 			//Width and height
 			var w = 600;
 			var h = 250;
-			var padding = 30;
-			
-			var dataset = [ 10, 24, 35, 4, 6 ];
+			var padding = 40;
 
 			var xScale = d3.scale.ordinal()
 							.domain(d3.range(dataset.length))
@@ -119,7 +155,7 @@
 			var yAxis = d3.svg.axis()
 							  .scale(yScale)
 							  .orient("left")
-							  .ticks(5);
+							  .ticks(4);
 							  
 			
 			//Create SVG element
@@ -142,21 +178,24 @@
 			   .attr("height", function(d) {
 			   		return yScale(d);
 			   })
-			   .attr("fill", function(d) {
-					return "rgb(0, 0, " + (d * 10) + ")";
+			   .attr("fill", function(d, i) {
+					return erakonnad[i].color;
 			   })
-			   .on("mouseover", function(d) {
+			   .on("mouseover", function(d, i) {
 
 					//Get this bar's x/y values, then augment for the tooltip
 					var xPosition = parseFloat(d3.select(this).attr("x")) + xScale.rangeBand() / 2;
 					var yPosition = parseFloat(d3.select(this).attr("y")) / 2 + h / 2;
 
-					//Update the tooltip position and value
+					//Update the tooltip position and values
 					d3.select("#tooltip")
 						.style("left", xPosition + "px")
 						.style("top", yPosition + "px")						
 						.select("#value")
-						.text(d);
+						.text(Math.round(dataset[i]));
+					
+					d3.select("#tooltip").select("strong")
+						.text(erakonnad[i].name);
 			   
 					//Show the tooltip
 					d3.select("#tooltip").classed("hidden", false);
@@ -182,8 +221,8 @@
 		// from http://bl.ocks.org/mbostock/6452972
 
 	var margin = {top: 200, right: 50, bottom: 200, left: 50},
-		width = 960 - margin.left - margin.right,
-		height = 500 - margin.bottom - margin.top;
+		width = w - margin.left - margin.right,
+		height = 100 - margin.bottom - margin.top;
 
 	var x = d3.scale.linear()
 		.domain([200, 1200])
@@ -207,7 +246,7 @@
 		.call(d3.svg.axis()
 		  .scale(x)
 		  .orient("bottom")
-		  .tickFormat(function(d) { return d + "EUR"; })
+		  .tickFormat(function(d) { return d + "€"; })
 		  .tickSize(0)
 		  .tickPadding(12))
 	  .select(".domain")
@@ -229,12 +268,10 @@
 		.attr("transform", "translate(0," + height / 2 + ")")
 		.attr("r", 9);
 
-	/*slider
+	slider
 		.call(brush.event)
-	  .transition() // gratuitous intro!
-		.duration(750)
-		.call(brush.extent([70, 70]))
-	.call(brush.event);*/
+		.call(brush.extent([initialBruto, initialBruto]))
+	.call(brush.event);
 		
 	function update_test(value) {
 		
@@ -242,8 +279,8 @@
 		var numValues = dataset.length;						//Count original length of dataset
 		dataset = [];  						 				//Initialize empty array
 		for (var i = 0; i < numValues; i++) {				//Loop numValues times
-			var newNumber = Math.floor(Math.random() * 25); //New random integer (0-25)
-			dataset.push(newNumber);			 			//Add new number to array
+			dataset.push(erakonnad[i].fun(value));
+			console.log("i=" + i + ", bruto=" + value);
 		}
 
 		//Update y scale domain
@@ -264,8 +301,8 @@
 		   .attr("height", function(d) {
 				return yScale(d);
 		   })
-		   .attr("fill", function(d) {
-				return "rgb(0, 0, " + (d * 10) + ")";
+		   .attr("fill", function(d, i) {
+				return erakonnad[i].color;
 		   });
 		   
 		//Update Y axis
@@ -273,24 +310,6 @@
 			.transition()
 			.duration(500)
 		.call(yAxis);
-
-		//Update all labels
-		/*svg_graph.selectAll("text")
-		   .data(dataset)
-		   .transition()
-		   .delay(function(d, i) {
-			   return i / dataset.length * 1000;
-		   })
-		   .duration(500)
-		   .text(function(d) {
-				return d;
-		   })
-		   .attr("x", function(d, i) {
-				return xScale(i) + xScale.rangeBand() / 2;
-		   })
-		   .attr("y", function(d) {
-				return h - yScale(d) + 14;
-		});*/
 		
 		}
 
@@ -303,7 +322,7 @@
 	  }
 
 	  handle.attr("cx", x(value));
-	  update_test(5);
+	  update_test(value);
 	}
 	</script>
 
