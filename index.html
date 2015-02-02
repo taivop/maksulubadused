@@ -93,6 +93,11 @@
 	<body>
 		<div id="contents">
 		<svg id="graph"></svg>
+		<form>
+			Lapsi: <input type="text" name="firstname"><br />
+			SDE1: <input type="checkbox" id="sde1" name="sde1" value="Bike">mulle kehtib SDE1<br>
+			SDE2: <input type="checkbox" id="sde2" name="sde2" value="Bike">mulle kehtib SDE2<br>
+		</form>
 		<svg id="slider"></svg>
 		<div id="tooltip" class="hidden">
 			<p><strong>Erakond</strong></p>
@@ -186,7 +191,7 @@
 
 					//Get this bar's x/y values, then augment for the tooltip
 					var xPosition = parseFloat(d3.select(this).attr("x")) + xScale.rangeBand() / 2;
-					var yPosition = parseFloat(d3.select(this).attr("y")) / 2 + h / 2;
+					var yPosition = parseFloat(d3.select(this).attr("y")) / 2 + h/2;
 
 					//Update the tooltip position and values
 					d3.select("#tooltip")
@@ -274,7 +279,7 @@
 		.call(brush.extent([initialBruto, initialBruto]))
 	.call(brush.event);
 		
-	function update_test(salary) {
+	function updateGraph(salary, children, sde1, sde2) {
 		
 		//New values for dataset
 		var numValues = dataset.length;						//Count original length of dataset
@@ -323,7 +328,7 @@
 	  }
 
 	  handle.attr("cx", x(salary));
-	  update_test(salary);
+	  updateGraph(salary, 0, true, true);
 	}
 	</script>
 
