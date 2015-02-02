@@ -326,6 +326,115 @@
 	  update_test(salary);
 	}
 	</script>
+	
+	<script>
+		// Slider 2
+
+	var margin2 = {top: 200, right: 50, bottom: 200, left: 50},
+		width2 = w - margin.left - margin.right,
+		height2 = 100 - margin.bottom - margin.top;
+
+	var x2 = d3.scale.linear()
+		.domain([200, 1200])
+		.range([0, width2])
+		.clamp(true);
+
+	var brush2 = d3.svg.brush()
+		.x(x2)
+		.extent([0, 0])
+		.on("brush", brushed2);
+
+	var svg3 = d3.select("svg#slider")
+		.attr("width", width2 + margin2.left + margin2.right)
+		.attr("height", height2 + margin2.top + margin2.bottom)
+		.append("g")
+		.attr("transform", "translate(" + margin2.left + "," + margin2.top + ")");
+
+	svg3.append("g")
+		.attr("class", "x axis_slider")
+		.attr("transform", "translate(0," + height2 / 2 + ")")
+		.call(d3.svg.axis()
+		  .scale(x2)
+		  .orient("bottom")
+		  .tickFormat(function(d) { return d + "€"; })
+		  .tickSize(0)
+		  .tickPadding(12))
+	  .select(".domain")
+	  .select(function() { return this.parentNode.appendChild(this.cloneNode(true)); })
+		.attr("class", "halo");
+
+	var slider = svg3.append("g")
+		.attr("class", "slider")
+		.call(brush);
+
+	slider.selectAll(".extent,.resize")
+		.remove();
+
+	slider.select(".background")
+		.attr("height", height);
+
+	var handle = slider.append("circle")
+		.attr("class", "handle")
+		.attr("transform", "translate(0," + height / 2 + ")")
+		.attr("r", 9);
+
+	slider
+		.call(brush.event)
+		.call(brush.extent([initialBruto, initialBruto]))
+	.call(brush.event);
+		
+	function update_test(salary) {
+		
+		//New values for dataset
+		var numValues = dataset.length;						//Count original length of dataset
+		dataset = [];  						 				//Initialize empty array
+		for (var i = 0; i < numValues; i++) {				//Loop numValues times
+			dataset.push(erakonnad[i].fun(salary));
+			console.log("i=" + i + ", bruto=" + salary);
+		}
+
+		//Update y scale domain
+		yScale.domain([0, d3.max(dataset)]);
+		
+		
+		//Update all rects
+		svg_graph.selectAll("rect")
+		   .data(dataset)
+		   .transition()
+		   .delay(function(d, i) {
+			   return i / dataset.length * 100;
+		   })
+		   .duration(500)
+		   .attr("y", function(d) {
+				return h - padding - yScale(d);
+		   })
+		   .attr("height", function(d) {
+				return yScale(d);
+		   })
+		   .attr("fill", function(d, i) {
+				return erakonnad[i].color;
+		   });
+		   
+		//Update Y axis
+		svg_graph.select(".y.axis")
+			.transition()
+			.duration(500)
+		.call(yAxis);
+		
+		}
+
+	function brushed() {
+	  var salary = brush.extent()[0];
+
+	  if (d3.event.sourceEvent) { // not a programmatic event
+		salary = x.invert(d3.mouse(this)[0]);
+		brush.extent([salary, salary]);
+	  }
+
+	  handle.attr("cx", x(salary));
+	  update_test(salary);
+	}
+	</script>
 
 	</body>
 </html>
