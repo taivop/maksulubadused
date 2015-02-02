@@ -235,13 +235,13 @@
 		.extent([0, 0])
 		.on("brush", brushed);
 
-	var svg_slider = d3.select("svg#slider")
+	var svg2 = d3.select("svg#slider")
 		.attr("width", width + margin.left + margin.right)
 		.attr("height", height + margin.top + margin.bottom)
 	  .append("g")
 		.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-	svg_slider.append("g")
+	svg2.append("g")
 		.attr("class", "x axis_slider")
 		.attr("transform", "translate(0," + height / 2 + ")")
 		.call(d3.svg.axis()
@@ -254,7 +254,7 @@
 	  .select(function() { return this.parentNode.appendChild(this.cloneNode(true)); })
 		.attr("class", "halo");
 
-	var slider = svg_slider.append("g")
+	var slider = svg2.append("g")
 		.attr("class", "slider")
 		.call(brush);
 
@@ -274,14 +274,14 @@
 		.call(brush.extent([initialBruto, initialBruto]))
 	.call(brush.event);
 		
-	function update_test(value) {
+	function update_test(salary) {
 		
 		//New values for dataset
 		var numValues = dataset.length;						//Count original length of dataset
 		dataset = [];  						 				//Initialize empty array
 		for (var i = 0; i < numValues; i++) {				//Loop numValues times
-			dataset.push(erakonnad[i].fun(value));
-			console.log("i=" + i + ", bruto=" + value);
+			dataset.push(erakonnad[i].fun(salary));
+			console.log("i=" + i + ", bruto=" + salary);
 		}
 
 		//Update y scale domain
@@ -315,15 +315,15 @@
 		}
 
 	function brushed() {
-	  var value = brush.extent()[0];
+	  var salary = brush.extent()[0];
 
 	  if (d3.event.sourceEvent) { // not a programmatic event
-		value = x.invert(d3.mouse(this)[0]);
-		brush.extent([value, value]);
+		salary = x.invert(d3.mouse(this)[0]);
+		brush.extent([salary, salary]);
 	  }
 
-	  handle.attr("cx", x(value));
-	  update_test(value);
+	  handle.attr("cx", x(salary));
+	  update_test(salary);
 	}
 	</script>
 
