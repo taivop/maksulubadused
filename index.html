@@ -95,8 +95,8 @@
 		<svg id="graph"></svg>
 		<form action="javascript:void(0);">
 			Lapsi: <input type="text" id="children" name="children" value="0"><br />
-			SDE1: <input type="checkbox" id="checkbox1" name="sde1" value="sde1">mulle kehtib SDE1<br>
-			SDE2: <input type="checkbox" id="checkbox2" name="sde2" value="sde1">mulle kehtib SDE2<br>
+			<input type="checkbox" id="checkbox1" name="sde1" value="sde1">Olen maaelanik<br>
+			<input type="checkbox" id="checkbox2" name="sde2" value="sde1">Olen noor, õppur või pensionär<br>
 		</form>
 		<svg id="slider"></svg>
 		<div id="tooltip" class="hidden">
@@ -105,11 +105,14 @@
 		</div>
 		</div>
 		<script type="text/javascript">
-			var children = 0;
+			var children = 1;
 			var initialSalary = 600;
 			var salary = initialSalary;
 			var sde1 = false;
 			var sde2 = false;
+			
+			//Set initial value in DOM
+			d3.select("#children").attr("value", children);
 		
 			//Data defs
 			var ekre = {
@@ -129,7 +132,7 @@
 			var reform = {
 				fun: function(bruto, lapsi, sde1, sde2) { return 0.7 * Math.pow(bruto, 1.2); },
 				name: "Reformierakond",
-				abbr: "Reform",
+				abbr: "Ref",
 				color: "#ffe200"
 			};
 			
@@ -263,7 +266,7 @@
 		height = 100 - margin.bottom - margin.top;
 
 	var x = d3.scale.linear()
-		.domain([200, 1200])
+		.domain([390, 4000])
 		.range([0, width])
 		.clamp(true);
 
