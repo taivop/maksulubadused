@@ -95,8 +95,8 @@
 		<svg id="graph"></svg>
 		<form>
 			Lapsi: <input type="text" name="firstname"><br />
-			SDE1: <input type="checkbox" id="sde1" name="sde1" value="Bike">mulle kehtib SDE1<br>
-			SDE2: <input type="checkbox" id="sde2" name="sde2" value="Bike">mulle kehtib SDE2<br>
+			SDE1: <input type="checkbox" id="checkbox1" name="sde1" value="sde1">mulle kehtib SDE1<br>
+			SDE2: <input type="checkbox" id="checkbox2" name="sde2" value="sde1">mulle kehtib SDE2<br>
 		</form>
 		<svg id="slider"></svg>
 		<div id="tooltip" class="hidden">
@@ -105,29 +105,44 @@
 		</div>
 		</div>
 		<script type="text/javascript">
+			var children = 0;
+			var initialSalary = 600;
+			var salary = initialSalary;
+			var sde1 = false;
+			var sde2 = false;
 		
 			//Data defs
 			var ekre = {
-				fun: function(bruto) { return 2 * bruto; },
+				fun: function(bruto, lapsi, sde1, sde2) { return 2 * bruto; },
 				name: "Eesti Konservatiivne Rahvaerakond",
+				abbr: "EKRE",
 				color: "#0077bd"
 			};
 			
 			var irl = {
-				fun: function(bruto) { return 1.5 * Math.pow(bruto, 0.9); },
+				fun: function(bruto, lapsi, sde1, sde2) { return 1.5 * Math.pow(bruto, 0.9); },
 				name: "Isamaa ja Res Publica Liit",
+				abbr: "IRL",
 				color: "#0095ce"
 			};
 			
 			var reform = {
-				fun: function(bruto) { return 0.7 * Math.pow(bruto, 1.2); },
+				fun: function(bruto, lapsi, sde1, sde2) { return 0.7 * Math.pow(bruto, 1.2); },
 				name: "Reformierakond",
+				abbr: "Reform",
 				color: "#ffe200"
 			};
 			
 			var sde = {
-				fun: function(bruto) { return 0.8 * 2000 - bruto; },
+				fun: function(bruto, lapsi, sde1, sde2) {
+					var sum = 0.8 * 2000 - bruto;
+					if(sde1) sum += 500;
+					if(sde2) sum -= 200;
+					console.log(sum);
+					return sum;
+				},
 				name: "Sotsiaaldemokraatlik Erakond",
+				abbr: "SDE",
 				color: "#aa0b04"
 			};
 			
@@ -135,12 +150,10 @@
 			
 			
 			//Initial values for dataset
-			initialBruto = 500;
 			dataset = [];
 			
 			for (var i = 0; i < erakonnad.length; i++) {
-				dataset.push(erakonnad[i].fun(initialBruto));
-				//console.log("i=" + i + ", bruto=" + initialBruto);
+				dataset.push(erakonnad[i].fun(salary));
 			}
 			
 
@@ -156,6 +169,8 @@
 			var yScale = d3.scale.linear()
 							.domain([0, d3.max(dataset)])
 							.range([h-padding, padding]);
+			console.log("yScale(0)=" + yScale(0));
+			
 							
 			//Define Y axis
 			var yAxis = d3.svg.axis()
@@ -178,11 +193,11 @@
 			   		return xScale(i);
 			   })
 			   .attr("y", function(d) {
-			   		return h-padding-yScale(d);
+			   		return yScale(d);
 			   })
 			   .attr("width", xScale.rangeBand())
 			   .attr("height", function(d) {
-			   		return yScale(d);
+			   		return h-padding-yScale(d);
 			   })
 			   .attr("fill", function(d, i) {
 					return erakonnad[i].color;
@@ -219,6 +234,16 @@
 				.attr("class", "y axis")
 				.attr("transform", "translate(" + padding + ",0)")
 				.call(yAxis);
+				
+			//Catch checkbox updates
+			d3.select("#checkbox1").on("change", function() {
+				sde1 = this.checked;
+				updateGraph(salary, children, sde1, sde2);
+			});
+			d3.select("#checkbox2").on("change", function() {
+				sde2 = this.checked;
+				updateGraph(salary, children, sde1, sde2);
+			});
 
 			
 		</script>
@@ -266,17 +291,14 @@
 	slider.selectAll(".extent,.resize")
 		.remove();
 
-	slider.select(".background")
-		.attr("height", height);
-
 	var handle = slider.append("circle")
 		.attr("class", "handle")
 		.attr("transform", "translate(0," + height / 2 + ")")
 		.attr("r", 9);
-
+		
 	slider
 		.call(brush.event)
-		.call(brush.extent([initialBruto, initialBruto]))
+		.call(brush.extent([initialSalary, initialSalary]))
 	.call(brush.event);
 		
 	function updateGraph(salary, children, sde1, sde2) {
@@ -285,8 +307,7 @@
 		var numValues = dataset.length;						//Count original length of dataset
 		dataset = [];  						 				//Initialize empty array
 		for (var i = 0; i < numValues; i++) {				//Loop numValues times
-			dataset.push(erakonnad[i].fun(salary));
-			console.log("i=" + i + ", bruto=" + salary);
+			dataset.push(erakonnad[i].fun(salary, children, sde1, sde2));
 		}
 
 		//Update y scale domain
@@ -302,10 +323,10 @@
 		   })
 		   .duration(500)
 		   .attr("y", function(d) {
-				return h - padding - yScale(d);
+				return yScale(d);
 		   })
 		   .attr("height", function(d) {
-				return yScale(d);
+				return h-padding-yScale(d);
 		   })
 		   .attr("fill", function(d, i) {
 				return erakonnad[i].color;
@@ -320,7 +341,7 @@
 		}
 
 	function brushed() {
-	  var salary = brush.extent()[0];
+	  salary = brush.extent()[0];
 
 	  if (d3.event.sourceEvent) { // not a programmatic event
 		salary = x.invert(d3.mouse(this)[0]);
@@ -328,7 +349,7 @@
 	  }
 
 	  handle.attr("cx", x(salary));
-	  updateGraph(salary, 0, true, true);
+	  updateGraph(salary, 0, sde1, sde2);
 	}
 	</script>
 
