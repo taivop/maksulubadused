@@ -93,8 +93,8 @@
 	<body>
 		<div id="contents">
 		<svg id="graph"></svg>
-		<form>
-			Lapsi: <input type="text" name="firstname"><br />
+		<form action="javascript:void(0);">
+			Lapsi: <input type="text" id="children" name="children" value="0"><br />
 			SDE1: <input type="checkbox" id="checkbox1" name="sde1" value="sde1">mulle kehtib SDE1<br>
 			SDE2: <input type="checkbox" id="checkbox2" name="sde2" value="sde1">mulle kehtib SDE2<br>
 		</form>
@@ -113,7 +113,7 @@
 		
 			//Data defs
 			var ekre = {
-				fun: function(bruto, lapsi, sde1, sde2) { return 2 * bruto; },
+				fun: function(bruto, lapsi, sde1, sde2) { return 2 * bruto * lapsi; },
 				name: "Eesti Konservatiivne Rahvaerakond",
 				abbr: "EKRE",
 				color: "#0077bd"
@@ -138,7 +138,6 @@
 					var sum = 0.8 * 2000 - bruto;
 					if(sde1) sum += 500;
 					if(sde2) sum -= 200;
-					console.log(sum);
 					return sum;
 				},
 				name: "Sotsiaaldemokraatlik Erakond",
@@ -153,7 +152,7 @@
 			dataset = [];
 			
 			for (var i = 0; i < erakonnad.length; i++) {
-				dataset.push(erakonnad[i].fun(salary));
+				dataset.push(erakonnad[i].fun(salary, children, sde1, sde2));
 			}
 			
 
@@ -169,7 +168,6 @@
 			var yScale = d3.scale.linear()
 							.domain([0, d3.max(dataset)])
 							.range([h-padding, padding]);
-			console.log("yScale(0)=" + yScale(0));
 			
 							
 			//Define Y axis
@@ -242,6 +240,15 @@
 			});
 			d3.select("#checkbox2").on("change", function() {
 				sde2 = this.checked;
+				updateGraph(salary, children, sde1, sde2);
+			});
+			
+			//Catch children input updates
+			d3.select("#children").on("change", function() {
+				var valIn = parseInt(this.value);
+				if (isNaN(valIn)) children = 0;		// check illegal values
+				else children = valIn;
+				console.log(children);
 				updateGraph(salary, children, sde1, sde2);
 			});
 
@@ -349,7 +356,7 @@
 	  }
 
 	  handle.attr("cx", x(salary));
-	  updateGraph(salary, 0, sde1, sde2);
+	  updateGraph(salary, children, sde1, sde2);
 	}
 	</script>
 
