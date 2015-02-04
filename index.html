@@ -160,6 +160,7 @@
 						var sm = 0.33 - Math.max(0.03 * maal, 0.13 * soodusgrupp);
 						var tm = (Math.max(bruto * (1 - 0.016 - sammas * 0.02) - 154, 0) * 0.20 + Math.max(bruto * (1 - 0.016 - sammas * 0.02) - 1600, 0)*0.09) / (bruto * (1 - 0.016 - sammas * 0.02 - 154));
 						var maksuvaba = 154;
+						//[MAX(Bruto*(1 - 0.016 - Sammas*0.02) - 154 , 0)*0.20 + MAX(Bruto*(1 - 0.016 - Sammas*0.02) - 1600 , 0)*0.09] / [Bruto*(1 - 0.016 - Sammas*0.02 - 154)]
 						//console.log("bruto=" + bruto + "," + "sammas=" + sammas + " => sm=" + sm + "," + "tm=" + tm);	
 
 						return netSalary(bruto, tm, maksuvaba, sammas) - currentNet(bruto);
@@ -196,15 +197,18 @@
 			//Width and height
 			var w = 600;
 			var h = 250;
-			var padding = 40;
+			var paddingBottom = 40;
+			var paddingTop = 20;
+			var paddingLeft = 40;
+			var paddingRight = 20;
 
 			var xScale = d3.scale.ordinal()
 							.domain(d3.range(dataset.length))
-							.rangeRoundBands([padding, w-padding], 0.05);
+							.rangeRoundBands([paddingLeft, w-paddingRight], 0.05);
 
 			var yScale = d3.scale.linear()
-							.domain([0, d3.max(dataset)])
-							.range([h-padding, padding]);
+							.domain([Math.min(0, d3.min(dataset)), Math.max(d3.max(dataset), 0)])
+							.range([h-paddingBottom, paddingTop]);
 			
 							
 			//Define Y axis
@@ -227,12 +231,15 @@
 			   .attr("x", function(d, i) {
 			   		return xScale(i);
 			   })
-			   .attr("y", function(d) {
-			   		return yScale(d);
-			   })
 			   .attr("width", xScale.rangeBand())
+			   .attr("y", function(d) {
+					if (d >= 0)
+						return yScale(d);
+					else
+						return yScale(0);
+			   })
 			   .attr("height", function(d) {
-			   		return h-padding-yScale(d);
+					return Math.abs(yScale(0) - yScale(d));
 			   })
 			   .attr("fill", function(d, i) {
 					return erakonnad[i].color;
@@ -267,7 +274,7 @@
 			//Create Y axis
 			svg_graph.append("g")
 				.attr("class", "y axis")
-				.attr("transform", "translate(" + padding + ",0)")
+				.attr("transform", "translate(" + paddingLeft + ",0)")
 				.call(yAxis);
 				
 			//Catch checkbox updates
@@ -367,7 +374,7 @@
 		}
 
 		//Update y scale domain
-		yScale.domain([d3.min(dataset), d3.max(dataset)]);
+		yScale.domain([Math.min(0, d3.min(dataset)), Math.max(d3.max(dataset), 0)]);
 		
 		
 		//Update all rects
@@ -385,10 +392,7 @@
 					return yScale(0);
 		   })
 		   .attr("height", function(d) {
-				if (d >= 0)
-					return h - padding - yScale(d);
-				else
-					return h - padding - Math.abs(yScale(0) - yScale(d));
+				return Math.abs(yScale(0) - yScale(d));
 		   })
 		   .attr("fill", function(d, i) {
 				return erakonnad[i].color;
