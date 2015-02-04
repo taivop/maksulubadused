@@ -95,8 +95,9 @@
 		<svg id="graph"></svg>
 		<form action="javascript:void(0);">
 			Lapsi: <input type="text" id="children" name="children" value="0"><br />
-			<input type="checkbox" id="checkbox1" name="sde1" value="sde1">Olen maaelanik<br>
-			<input type="checkbox" id="checkbox2" name="sde2" value="sde1">Olen noor, õppur või pensionär<br>
+			<input type="checkbox" id="checkbox1" name="checkbox1" value="cb1">Elan ja töötan maal<br>
+			<input type="checkbox" id="checkbox2" name="checkbox2" value="cb2">Olen noor, õppur või pensionär<br>
+			<input type="checkbox" id="checkbox3" name="checkbox3" value="cb3">Olen liitunud II pensionisambaga<br>
 		</form>
 		<svg id="slider"></svg>
 		<div id="tooltip" class="hidden">
@@ -108,41 +109,60 @@
 			var children = 1;
 			var initialSalary = 600;
 			var salary = initialSalary;
-			var sde1 = false;
-			var sde2 = false;
+			var check1 = 0;
+			var check2 = 0;
+			var check3 = 0;
 			
 			//Set initial value in DOM
 			d3.select("#children").attr("value", children);
 		
 			//Data defs
 			var ekre = {
-				fun: function(bruto, lapsi, sde1, sde2) { return 2 * bruto * lapsi; },
+				fun: function(bruto, lapsi, maal, soodusgrupp, sammas) { 
+						var sm = 0.33;
+						var tm = Math.max(0, 0.2 - lapsi * 0.05);
+						var maksuvaba = 390;
+						
+						return netSalary(bruto, tm, maksuvaba, sammas) - currentNet(bruto);
+					},
 				name: "Eesti Konservatiivne Rahvaerakond",
 				abbr: "EKRE",
 				color: "#0077bd"
 			};
 			
 			var irl = {
-				fun: function(bruto, lapsi, sde1, sde2) { return 1.5 * Math.pow(bruto, 0.9); },
+				fun: function(bruto, lapsi, maal, soodusgrupp, sammas) {
+						var sm = 0.33;
+						var tm = 0.2;
+						var maksuvaba = Math.min(Math.max(1000-bruto, 154), 500);
+						
+						return netSalary(bruto, tm, maksuvaba, sammas) - currentNet(bruto);
+					},
 				name: "Isamaa ja Res Publica Liit",
 				abbr: "IRL",
 				color: "#0095ce"
 			};
 			
 			var reform = {
-				fun: function(bruto, lapsi, sde1, sde2) { return 0.7 * Math.pow(bruto, 1.2); },
+				fun: function(bruto, lapsi, maal, soodusgrupp, sammas) {
+						var sm = 0.31;
+						var tm = 0.2;
+						var maksuvaba = 300;
+						return netSalary(bruto, tm, maksuvaba, sammas) - currentNet(bruto);
+					},
 				name: "Reformierakond",
 				abbr: "Ref",
 				color: "#ffe200"
 			};
 			
 			var sde = {
-				fun: function(bruto, lapsi, sde1, sde2) {
-					var sum = 0.8 * 2000 - bruto;
-					if(sde1) sum += 500;
-					if(sde2) sum -= 200;
-					return sum;
-				},
+				fun: function(bruto, lapsi, maal, soodusgrupp, sammas) {
+						var sm = 0.33 - Math.max(0.03 * maal, 0.13 * soodusgrupp);
+						var tm = (Math.max(bruto * (1 - 0.016 - sammas * 0.02) - 154, 0) * 0.20 + Math.max(bruto * (1 - 0.016 - sammas * 0.02) - 1600, 0)*0.09) / (bruto * (1 - 0.016 - sammas * 0.02 - 154));
+						var maksuvaba = 154;
+
+						return netSalary(bruto, tm, maksuvaba, sammas) - currentNet(bruto);
+					},
 				name: "Sotsiaaldemokraatlik Erakond",
 				abbr: "SDE",
 				color: "#aa0b04"
@@ -150,12 +170,25 @@
 			
 			erakonnad = [irl, sde, reform, ekre];
 			
+			//Helper functions
+			netSalary = function(bruto, tm, maksuvaba, sammas) {
+				return bruto * (1 - 0.016 - sammas * 0.02) - Math.max(bruto * (1 - 0.016 - sammas * 0.02) - maksuvaba, 0) * tm;
+			}
+			
+			employerCost = function(bruto, sm) {
+				return bruto * (1 + 0.008 + sm);
+			}
+			
+			currentNet = function(bruto) {
+				return netSalary(bruto, 0.2, 154, 0.33);
+			}
+			
 			
 			//Initial values for dataset
 			dataset = [];
 			
 			for (var i = 0; i < erakonnad.length; i++) {
-				dataset.push(erakonnad[i].fun(salary, children, sde1, sde2));
+				dataset.push(erakonnad[i].fun(salary, children, check1, check2, check3));
 			}
 			
 
@@ -238,12 +271,25 @@
 				
 			//Catch checkbox updates
 			d3.select("#checkbox1").on("change", function() {
-				sde1 = this.checked;
-				updateGraph(salary, children, sde1, sde2);
+				if (this.checked)
+					check1 = 1;
+				else
+					check1 = 0;
+				updateGraph(salary, children, check1, check2, check3);
 			});
 			d3.select("#checkbox2").on("change", function() {
-				sde2 = this.checked;
-				updateGraph(salary, children, sde1, sde2);
+				if (this.checked)
+					check2 = 1;
+				else
+					check2 = 0;
+				updateGraph(salary, children, check1, check2, check3);
+			});
+			d3.select("#checkbox3").on("change", function() {
+				if (this.checked)
+					check3 = 1;
+				else
+					check3 = 0;
+				updateGraph(salary, children, check1, check2, check3);
 			});
 			
 			//Catch children input updates
@@ -252,7 +298,7 @@
 				if (isNaN(valIn)) children = 0;		// check illegal values
 				else children = valIn;
 				console.log(children);
-				updateGraph(salary, children, sde1, sde2);
+				updateGraph(salary, children, check1, check2, check3);
 			});
 
 			
@@ -266,7 +312,7 @@
 		height = 100 - margin.bottom - margin.top;
 
 	var x = d3.scale.linear()
-		.domain([390, 4000])
+		.domain([390, 5000])
 		.range([0, width])
 		.clamp(true);
 
@@ -311,13 +357,13 @@
 		.call(brush.extent([initialSalary, initialSalary]))
 	.call(brush.event);
 		
-	function updateGraph(salary, children, sde1, sde2) {
+	function updateGraph(salary, children, check1, check2, check3) {
 		
 		//New values for dataset
 		var numValues = dataset.length;						//Count original length of dataset
 		dataset = [];  						 				//Initialize empty array
 		for (var i = 0; i < numValues; i++) {				//Loop numValues times
-			dataset.push(erakonnad[i].fun(salary, children, sde1, sde2));
+			dataset.push(erakonnad[i].fun(salary, children, check1, check2, check3));
 		}
 
 		//Update y scale domain
@@ -359,7 +405,7 @@
 	  }
 
 	  handle.attr("cx", x(salary));
-	  updateGraph(salary, children, sde1, sde2);
+	  updateGraph(salary, children, check1, check2, check3);
 	}
 	</script>
 
