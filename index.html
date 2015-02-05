@@ -143,7 +143,8 @@
 				},
 				name: "Eesti Konservatiivne Rahvaerakond",
 				abbr: "EKRE",
-				color: "#0077bd"
+				color: "#0077bd",
+				opacity: 1
 			};
 			
 			var ekre_sm = {
@@ -156,7 +157,8 @@
 				},
 				name: "Eesti Konservatiivne Rahvaerakond",
 				abbr: "EKRE",
-				color: "#0077bd"
+				color: "#0077bd",
+				opacity: 0.5
 			};
 			
 			var irl = {
@@ -169,7 +171,8 @@
 				},			
 				name: "Isamaa ja Res Publica Liit",
 				abbr: "IRL",
-				color: "#0095ce"
+				color: "#0095ce",
+				opacity: 1
 			};
 			
 			var irl_sm = {
@@ -182,7 +185,8 @@
 				},			
 				name: "Isamaa ja Res Publica Liit",
 				abbr: "IRL",
-				color: "#0095ce"
+				color: "#0095ce",
+				opacity: 0.5
 			};
 			
 			var reform = {
@@ -194,7 +198,8 @@
 				},
 				name: "Reformierakond",
 				abbr: "Ref",
-				color: "#ffe200"
+				color: "#ffe200",
+				opacity: 1
 			};
 			
 			var reform_sm = {
@@ -207,7 +212,8 @@
 				},
 				name: "Reformierakond",
 				abbr: "Ref",
-				color: "#ffe200"
+				color: "#ffe200",
+				opacity: 0.5
 			};
 			
 			var sde = {
@@ -221,7 +227,8 @@
 				},			
 				name: "Sotsiaaldemokraatlik Erakond",
 				abbr: "SDE",
-				color: "#aa0b04"
+				color: "#aa0b04",
+				opacity: 1
 			};
 			
 			var sde_sm = {
@@ -236,7 +243,8 @@
 				},				
 				name: "Sotsiaaldemokraatlik Erakond",
 				abbr: "SDE",
-				color: "#aa0b04"
+				color: "#aa0b04",
+				opacity: 0.5
 			};
 			
 			erakonnad = [irl, irl_sm, sde, sde_sm, reform, reform_sm, ekre, ekre_sm];
@@ -309,6 +317,7 @@
 			   .attr("fill", function(d, i) {
 					return erakonnad[i].color;
 			   })
+			   .attr("style", function(d, i) { return "opacity:"+erakonnad[i].opacity+";"; })
 			   .on("mouseover", function(d, i) {
 
 					//Get this bar's x/y values, then augment for the tooltip
