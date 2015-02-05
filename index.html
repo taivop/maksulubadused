@@ -94,7 +94,8 @@
 		<div id="contents">
 		<svg id="graph"></svg>
 		<form action="javascript:void(0);">
-			Lapsi: <input type="text" id="children" name="children" value="0"><br />
+			Lapsi: <input type="number" id="children" name="children" value="0"><br />
+			Brutopalk: <input type="text" id="bruto_free" name="bruto_free" value="0"><br />
 			<input type="checkbox" id="checkbox1" name="checkbox1" value="cb1">Elan ja töötan maal<br>
 			<input type="checkbox" id="checkbox2" name="checkbox2" value="cb2">Olen noor, õppur või pensionär<br>
 			<input type="checkbox" id="checkbox3" name="checkbox3" value="cb3">Olen liitunud II pensionisambaga<br>
@@ -337,6 +338,17 @@
 				else children = valIn;
 				updateGraph(salary, children, check1, check2, check3);
 			});
+			
+			//Catch salary freetext update
+			d3.select("#bruto_free").on("change", function() {
+				var enteredBrutoFree = +this.value;
+				var slider = d3.select("svg#slider").select("g").select(".slider");
+				slider
+					.call(brush)
+					.call(brush.event)
+					.call(brush.extent([1800, 1800]))
+					.call(brush.event);
+			});
 
 			
 		</script>
@@ -392,11 +404,15 @@
 	slider
 		.call(brush.event)
 		.call(brush.extent([initialSalary, initialSalary]))
-	.call(brush.event);
+		.call(brush.event);
 		
 	function updateGraph(salary, children, check1, check2, check3) {
 	
-		console.log("updating graph");
+		//Update freetext selector
+		d3.select("#bruto_free")		// update freetext salary input
+		.attr("value", Math.round(salary));
+	
+		//console.log("updating graph");
 		
 		//New values for dataset
 		var numValues = dataset.length;						//Count original length of dataset
