@@ -27,7 +27,7 @@
 			
 			.axis text {
 				font-family: sans-serif;
-				font-size: 11px;
+				font-size: 16px;
 			}
 			
 			#tooltip {
@@ -230,7 +230,7 @@
 			var h = 250;
 			var paddingBottom = 40;
 			var paddingTop = 20;
-			var paddingLeft = 40;
+			var paddingLeft = 50;
 			var paddingRight = 20;
 
 			var xScale = d3.scale.ordinal()
@@ -246,6 +246,7 @@
 			var yAxis = d3.svg.axis()
 							  .scale(yScale)
 							  .orient("left")
+							  .tickFormat(function(d) { return d + "€"; })
 							  .ticks(4);
 							  
 			
@@ -307,7 +308,7 @@
 				.attr("class", "y axis")
 				.attr("transform", "translate(" + paddingLeft + ",0)")
 				.call(yAxis);
-				
+			
 			//Catch checkbox updates
 			d3.select("#checkbox1").on("change", function() {
 				if (this.checked)
@@ -399,7 +400,7 @@
 	
 		//Update freetext selector
 		d3.select("#bruto_display")		// update freetext salary input
-		.text(Math.round(salary));
+		.text(salary);
 	
 		//console.log("updating graph");
 		
@@ -451,6 +452,8 @@
 		brush.extent([salary, salary]);
 	  }
 
+	  salary = Math.round(salary / 10) * 10;	// round to nearest 10
+	  
 	  handle.attr("cx", x(salary));
 	  updateGraph(salary, children, check1, check2, check3);
 	}
