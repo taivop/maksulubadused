@@ -141,7 +141,13 @@
 					
 					return netSalary(bruto, tm, maksuvaba, sammas) - currentNet(bruto, sammas);
 				},
-				funsm: function(bruto, lapsi, maal, soodusgrupp, sammas) { 
+				name: "Eesti Konservatiivne Rahvaerakond",
+				abbr: "EKRE",
+				color: "#0077bd"
+			};
+			
+			var ekre_sm = {
+				fun: function(bruto, lapsi, maal, soodusgrupp, sammas) { 
 					var sm = 0.33;
 					var tm = Math.max(0, 0.2 - lapsi * 0.05);
 					var maksuvaba = 390;
@@ -160,8 +166,14 @@
 					var maksuvaba = Math.min(Math.max(1000 - bruto * (1 - 0.016 - sammas * 0.02), 154), 500);
 					
 					return netSalary(bruto, tm, maksuvaba, sammas) - currentNet(bruto, sammas);
-				},
-				funsm: function(bruto, lapsi, maal, soodusgrupp, sammas) {
+				},			
+				name: "Isamaa ja Res Publica Liit",
+				abbr: "IRL",
+				color: "#0095ce"
+			};
+			
+			var irl_sm = {
+				fun: function(bruto, lapsi, maal, soodusgrupp, sammas) {
 					var sm = 0.33;
 					var tm = 0.2;
 					var maksuvaba = Math.min(Math.max(1000 - bruto * (1 - 0.016 - sammas * 0.02), 154), 500);
@@ -180,7 +192,13 @@
 					var maksuvaba = 300;
 					return netSalary(bruto, tm, maksuvaba, sammas) - currentNet(bruto, sammas);
 				},
-				funsm: function(bruto, lapsi, maal, soodusgrupp, sammas) {
+				name: "Reformierakond",
+				abbr: "Ref",
+				color: "#ffe200"
+			};
+			
+			var reform_sm = {
+				fun: function(bruto, lapsi, maal, soodusgrupp, sammas) {
 					var sm = 0.31;
 					var tm = 0.2;
 					var maksuvaba = 300;
@@ -200,8 +218,14 @@
 					//[MAX(Bruto*(1 - 0.016 - Sammas*0.02) - 154 , 0)*0.20 + MAX(Bruto*(1 - 0.016 - Sammas*0.02) - 1600 , 0)*0.09] / [Bruto*(1 - 0.016 - Sammas*0.02 - 154)]
 					//console.log("bruto=" + bruto + "," + "sammas=" + sammas + " => sm=" + sm + "," + "tm=" + tm);	
 					return netSalary(bruto, tm, maksuvaba, sammas) - currentNet(bruto, sammas);
-				},
-				funsm: function(bruto, lapsi, maal, soodusgrupp, sammas) {
+				},			
+				name: "Sotsiaaldemokraatlik Erakond",
+				abbr: "SDE",
+				color: "#aa0b04"
+			};
+			
+			var sde_sm = {
+				fun: function(bruto, lapsi, maal, soodusgrupp, sammas) {
 					var sm = 0.33 - Math.max(0.03 * maal, 0.13 * soodusgrupp);
 					var brutosm = bruto*1.338/(1.008 + sm);
 					var tm = (Math.max(brutosm * (1 - 0.016 - sammas * 0.02) - 154, 0) * 0.20 + Math.max(brutosm * (1 - 0.016 - sammas * 0.02) - 1600, 0)*0.09) / (brutosm * (1 - 0.016 - sammas * 0.02) - 154);
@@ -215,7 +239,7 @@
 				color: "#aa0b04"
 			};
 			
-			erakonnad = [irl, sde, reform, ekre];
+			erakonnad = [irl, irl_sm, sde, sde_sm, reform, reform_sm, ekre, ekre_sm];
 		
 			//Initial values for dataset
 			dataset = [];
