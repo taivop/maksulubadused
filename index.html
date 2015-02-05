@@ -254,6 +254,15 @@
 			var svg_graph = d3.select("svg#graph")
 						.attr("width", w)
 						.attr("height", h);
+						
+			// Create y=0 line
+			var y0Line = d3.select("svg#graph")
+				.append("line")
+				.attr("x1", paddingLeft)
+				.attr("x2", w-paddingRight)
+				.attr("y1", yScale(0))
+				.attr("y2", yScale(0))
+				.attr("style", "stroke:#bbb;stroke-width:1;shape-rendering: crispEdges");
 
 			//Create bars
 			svg_graph.selectAll("rect")
@@ -441,6 +450,13 @@
 			.transition()
 			.duration(500)
 		.call(yAxis);
+		
+		//Update Y=0 line
+		y0Line
+			.transition()
+			.duration(500)
+			.attr("y1", yScale(0))
+			.attr("y2", yScale(0))
 		
 		}
 
