@@ -19,6 +19,10 @@
 				float: right;
 			}
 			
+			div#graph_div text {
+				shape-rendering: crispEdges;
+			}
+			
 			div#inputs {
 				float: left;
 			}
@@ -170,7 +174,7 @@
 					return netSalary(bruto, tm, maksuvaba, sammas) - currentNet(bruto, sammas);
 				},
 				name: "Eesti Konservatiivne Rahvaerakond",
-				abbr: "EKRE",
+				abbr: "EKRE*",
 				color: "#0077bd",
 				opacity: 0.5
 			};
@@ -198,7 +202,7 @@
 					return netSalary(bruto, tm, maksuvaba, sammas) - currentNet(bruto, sammas);
 				},			
 				name: "Isamaa ja Res Publica Liit",
-				abbr: "IRL",
+				abbr: "IRL*",
 				color: "#0095ce",
 				opacity: 0.5
 			};
@@ -225,7 +229,7 @@
 					return netSalary(brutosm, tm, maksuvaba, sammas) - currentNet(bruto, sammas);
 				},
 				name: "Reformierakond",
-				abbr: "Ref",
+				abbr: "Ref*",
 				color: "#ffe200",
 				opacity: 0.5
 			};
@@ -256,7 +260,7 @@
 					return netSalary(brutosm, tm, maksuvaba, sammas) - currentNet(bruto, sammas);
 				},				
 				name: "Sotsiaaldemokraatlik Erakond",
-				abbr: "SDE",
+				abbr: "SDE*",
 				color: "#aa0b04",
 				opacity: 0.5
 			};
@@ -309,6 +313,20 @@
 				.attr("y1", yScale(0))
 				.attr("y2", yScale(0))
 				.attr("style", "stroke:#bbb;stroke-width:1;shape-rendering: crispEdges");
+				
+				
+			//Create bar labels
+			svg_graph.selectAll("text")
+			   .data(erakonnad.map(function(d) { return d.abbr; }))
+			   .enter()
+			   .append("text")
+			   .text(function(d, i) { return d; })
+			   .attr("text-anchor", "middle")
+			   .attr("x", function(d, i) {
+					console.log(d);
+			   		return xScale(i) + 0.5 * xScale.rangeBand();
+			   })
+			   .attr("y", h-15);
 
 			//Create bars
 			svg_graph.selectAll("rect")
