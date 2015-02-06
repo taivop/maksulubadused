@@ -401,7 +401,7 @@
 					d3.select("#tooltip").classed("hidden", true);
 					
 					//Return opacity to correct value on hover end
-					d3.select(this).attr("style", function(d, i) { return "opacity:"+erakonnad[i].opacity+";"; });
+					d3.select(this).attr("style", "opacity:"+erakonnad[i].opacity+";");
 					
 			   });
 			   
