@@ -60,7 +60,7 @@
 			
 			#tooltip {
 				position: absolute;
-				width: 200px;
+				width: 210px;
 				height: auto;
 				padding: 10px;
 				background-color: white;
@@ -119,6 +119,7 @@
 			table {
 				table-layout:fixed;
 				width: 100%;
+				margin-top: 10px;
 			}
 			
 			table, th, td {
@@ -171,12 +172,12 @@
 		<div id="table_div">
 		<table>
 			<tr>
-				<th style="background-color: #666;"></th>
+				<th style="background-color: #888;"></th>
 				<th>Praegu</th>
-				<th>IRL</th>		
-				<th>SDE</th>
-				<th>Ref</th>
-				<th>EKRE</th>
+				<th style="background: rgba(0, 149, 206, 0.8);">IRL</th>		
+				<th style="background: rgba(170, 11, 4, 0.8);">SDE</th>
+				<th style="background: rgba(255, 226, 0, 1);">Ref</th>
+				<th style="background: rgba(0, 119, 189, 0.8);">EKRE</th>
 				<th>Kesk</th>
 				<th>Vaba</th>
 			</tr>
@@ -267,7 +268,7 @@
 					this.netopalk = netSalary(bruto, this.tm, this.maksuvaba, sammas);
 					return this.netopalk - currentNet(bruto, sammas);
 				},
-				name: "Eesti Konservatiivne Rahvaerakond3",
+				name: "Eesti Konservatiivne Rahvaerakond",
 				abbr: "EKRE",
 				explain: null,
 				color: "#0077bd",
@@ -286,7 +287,7 @@
 					this.netopalk = netSalary(bruto, this.tm, this.maksuvaba, sammas);
 					return this.netopalk - currentNet(bruto, sammas);
 				},
-				name: "Eesti Konservatiivne Rahvaerakond",
+				name: "Eesti Konservatiivne Rahvaerakond*",
 				abbr: "EKRE*",
 				explain: "Siin on selgitav tekst.ekre2",
 				color: "#0077bd",
@@ -324,7 +325,7 @@
 					this.netopalk = netSalary(bruto, this.tm, this.maksuvaba, sammas);
 					return this.netopalk - currentNet(bruto, sammas);
 				},			
-				name: "Isamaa ja Res Publica Liit",
+				name: "Isamaa ja Res Publica Liit*",
 				abbr: "IRL*",
 				explain: "Siin on selgitav tekst.irl2",
 				color: "#0095ce",
@@ -363,7 +364,7 @@
 					this.netopalk = netSalary(brutosm, this.tm, this.maksuvaba, sammas);
 					return this.netopalk - currentNet(bruto, sammas);
 				},
-				name: "Reformierakond",
+				name: "Reformierakond*",
 				abbr: "Ref*",
 				explain: "Siin on selgitav tekst.ref2",
 				color: "#ffe200",
@@ -402,7 +403,7 @@
 					this.netopalk = netSalary(brutosm, this.tm, this.maksuvaba, sammas);
 					return this.netopalk - currentNet(bruto, sammas);
 				},				
-				name: "Sotsiaaldemokraatlik Erakond",
+				name: "Sotsiaaldemokraatlik Erakond*",
 				abbr: "SDE*",
 				explain: "Siin on selgitav tekst.sde2",
 				color: "#aa0b04",
