@@ -116,6 +116,11 @@
 			  cursor: crosshair;
 			}
 			
+			table {
+				table-layout:fixed;
+				width: 100%;
+			}
+			
 			table, th, td {
 				border: 1px solid black;
 				border-collapse: collapse;
@@ -126,7 +131,7 @@
 			}
 			
 			td.rowLabel {
-				text-align: left;
+				text-align: right;
 			}
 			
 			th, td {
@@ -164,7 +169,7 @@
 		</div>
 		
 		<div id="table_div">
-		<table style="width:100%">
+		<table>
 			<tr>
 				<th style="background-color: #666;"></th>
 				<th>Praegu</th>
@@ -179,11 +184,11 @@
 				<td class="rowLabel">Netopalk</td>
 				<td class="now"></td>		
 				<td class="irl"></td>
-				<td></td>		
-				<td></td>
-				<td></td>		
-				<td>?</td>
-				<td>?</td>
+				<td class="sde"></td>		
+				<td class="ref"></td>
+				<td class="ekre"></td>		
+				<td class="kesk">?</td>
+				<td class="vaba">?</td>
 			</tr>
 			<tr id="gain">
 				<td class="rowLabel">Võit</td>
@@ -627,9 +632,11 @@
 		
 	function updateTableNetSalary() {
 		var tr = d3.select("div#table_div").select("table").select("tr#netSalary");
-		tr.select(".now").text(currentTaxes);
-		
-	
+		tr.select(".now").text(Math.round(currentTaxes.netopalk));
+		tr.select(".irl").text(Math.round(irl.netopalk));
+		tr.select(".sde").text(Math.round(sde.netopalk));
+		tr.select(".ref").text(Math.round(reform.netopalk));
+		tr.select(".ekre").text(Math.round(ekre.netopalk));	
 	}
 	
 	function updateGraph(salary, children, check1, check2, check3) {
@@ -684,6 +691,9 @@
 			.duration(500)
 			.attr("y1", yScale(0))
 			.attr("y2", yScale(0))
+		
+		//Call the function of 'currentTaxes' object so its fields are updated
+		currentTaxes.fun(salary, children, check1, check2, check3);
 		
 		//Update table
 		updateTableNetSalary();
