@@ -568,6 +568,11 @@
 					
 					//Set opacity to 1 on hover
 					d3.select(this).attr("style", "opacity: 1.0;");
+					
+					//Highlight relevant table cells
+					var selector = erakonnad[i].abbr.replace('*', '').toLowerCase();
+					d3.select("table").selectAll("." + selector)
+						.attr("style", "background-color: #eee");
 
 			   })
 			   .on("mouseout", function(d, i) {
@@ -577,6 +582,11 @@
 					
 					//Return opacity to correct value on hover end
 					d3.select(this).attr("style", "opacity:"+erakonnad[i].opacity+";");
+					
+					//Un-highlight table cell
+					var selector = erakonnad[i].abbr.replace('*', '').toLowerCase();
+					d3.select("table").selectAll("." + selector)
+						.attr("style", "background-color: #fff");
 					
 			   });
 			   
