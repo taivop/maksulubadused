@@ -205,7 +205,7 @@
 				<th>Praegu</th>
 				<th style="background: rgba(0, 149, 206, 0.8);">IRL</th>		
 				<th style="background: rgba(170, 11, 4, 0.8);">SDE</th>
-				<th style="background: rgba(255, 226, 0, 1);">Ref</th>
+				<th style="background: rgba(255, 226, 0, 1);">RE</th>
 				<th style="background: rgba(0, 119, 189, 0.8);">EKRE</th>
 				<th>Kesk</th>
 				<th>Vaba</th>
@@ -215,7 +215,7 @@
 				<td class="now"></td>		
 				<td class="irl"></td>
 				<td class="sde"></td>		
-				<td class="ref"></td>
+				<td class="re"></td>
 				<td class="ekre"></td>		
 				<td class="kesk">?</td>
 				<td class="vaba">?</td>
@@ -225,7 +225,7 @@
 				<td class="now"></td>		
 				<td class="irl"></td>
 				<td class="sde"></td>		
-				<td class="ref"></td>
+				<td class="re"></td>
 				<td class="ekre"></td>		
 				<td class="kesk">?</td>
 				<td class="vaba">?</td>
@@ -235,7 +235,7 @@
 				<td class="now"></td>		
 				<td class="irl"></td>
 				<td class="sde"></td>		
-				<td class="ref"></td>
+				<td class="re"></td>
 				<td class="ekre"></td>		
 				<td>?<br />?<br />?</td>
 				<td>?<br />?<br />?</td>
@@ -387,7 +387,7 @@
 					return this.netopalk - currentNet(bruto, sammas);
 				},
 				name: "Reformierakond",
-				abbr: "Ref",
+				abbr: "RE",
 				explain: "Sinu võit tulumaksult.",
 				color: "#ffe200",
 				opacity: 1
@@ -407,7 +407,7 @@
 					return this.netopalk - currentNet(bruto, sammas);
 				},
 				name: "Reformierakond*",
-				abbr: "Ref*",
+				abbr: "RE*",
 				explain: "Sinu maksimaalne võimalik võit tulu- ja sotsiaalmaksult.",
 				color: "#ffe200",
 				opacity: 0.5
@@ -707,7 +707,7 @@
 		} else {
 			var refText = Math.round(reform.netopalk) + "€";
 		}
-		tr.select(".ref").text(refText);
+		tr.select(".re").text(refText);
 		
 		
 		//Update gains
@@ -739,7 +739,7 @@
 		} else {
 			var refText = Math.round(ref_gain)  + "€";
 		}
-		tr.select(".ref").text(refText);
+		tr.select(".re").text(refText);
 	}
 	
 	function updateTableTaxNumbers() {
@@ -747,7 +747,7 @@
 		tr.select(".now").html(Math.round(currentTaxes.maksuvaba) + "€<br />" + currentTaxes.tm.toFixed(2)*100 + "%<br />" + currentTaxes.sm.toFixed(2)*100 + "%");
 		tr.select(".irl").html(Math.round(irl.maksuvaba) + "€<br />" + irl.tm.toFixed(2)*100 + "%<br />" + irl.sm.toFixed(2)*100 + "%");
 		tr.select(".sde").html(Math.round(sde.maksuvaba) + "€<br />" + sde.tm.toFixed(2)*100 + "%<br />" + sde.sm.toFixed(2)*100 + "%");
-		tr.select(".ref").html(Math.round(reform.maksuvaba) + "€<br />" + reform.tm.toFixed(2)*100 + "%<br />" + reform.sm.toFixed(2)*100 + "%");
+		tr.select(".re").html(Math.round(reform.maksuvaba) + "€<br />" + reform.tm.toFixed(2)*100 + "%<br />" + reform.sm.toFixed(2)*100 + "%");
 		tr.select(".ekre").html(Math.round(ekre.maksuvaba) + "€<br />" + ekre.tm.toFixed(2)*100 + "%<br />" + ekre.sm.toFixed(2)*100 + "%");
 		
 	}
