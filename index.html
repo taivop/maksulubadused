@@ -557,6 +557,12 @@
 			   .attr("x", function(d, i) {
 			   		return xScale(i) + 0.5 * xScale.rangeBand();
 			   })
+			   .attr("style", function(d, i) {
+						if (erakonnad[i].abbr == "EKRE" || erakonnad[i].abbr == "EKRE*")
+							return "font-size: 13px;";
+						else
+							return "";
+				   })
 			   .attr("y", h-15);
 
 			//Create bars
