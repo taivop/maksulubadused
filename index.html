@@ -163,7 +163,7 @@
 		</div>
 		</div>
 		
-		<div id="tablediv">
+		<div id="table_div">
 		<table style="width:100%">
 			<tr>
 				<th style="background-color: #666;"></th>
@@ -582,6 +582,12 @@
 		.call(brush.extent([initialSalary, initialSalary]))
 		.call(brush.event);
 		
+	function updateTableNetSalary() {
+		var table = d3.select("div#table_div").select("table");
+		console.log(table);
+	
+	}
+	
 	function updateGraph(salary, children, check1, check2, check3) {
 	
 		//Update freetext selector
@@ -634,6 +640,9 @@
 			.duration(500)
 			.attr("y1", yScale(0))
 			.attr("y2", yScale(0))
+		
+		//Update table
+		updateTableNetSalary();
 		
 		}
 
