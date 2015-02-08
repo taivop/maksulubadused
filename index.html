@@ -636,17 +636,59 @@
 		var currentNet = currentTaxes.netopalk;
 		tr.select(".now").text(Math.round(currentNet));
 		tr.select(".irl").text(Math.round(irl.netopalk));
-		tr.select(".sde").text(Math.round(sde.netopalk));
-		tr.select(".ref").text(Math.round(reform.netopalk));
 		tr.select(".ekre").text(Math.round(ekre.netopalk));
+		
+		//Update net salaries for parties with ranges
+		//SDE
+		if(Math.abs(sde.netopalk - sde_sm.netopalk) > 1) {
+			var sde_smaller = Math.round(Math.min(sde.netopalk, sde_sm.netopalk));
+			var sde_larger = Math.round(Math.max(sde.netopalk, sde_sm.netopalk));
+			var sdeText = sde_smaller + "..." + sde_larger;
+		} else {
+			var sdeText = "" + Math.round(sde.netopalk);
+		}
+		tr.select(".sde").text(sdeText);
+		//Reform
+		if(Math.abs(reform.netopalk - reform_sm.netopalk) > 1) {
+			var ref_smaller = Math.round(Math.min(reform.netopalk, reform_sm.netopalk));
+			var ref_larger = Math.round(Math.max(reform.netopalk, reform_sm.netopalk));
+			var refText = ref_smaller + "..." + ref_larger;
+		} else {
+			var refText = "" + Math.round(reform.netopalk);
+		}
+		tr.select(".ref").text(refText);
+		
 		
 		//Update gains
 		var tr = d3.select("table").select("tr#gain");
 		tr.select(".now").text(0);
 		tr.select(".irl").text(Math.round(irl.netopalk - currentNet));
-		tr.select(".sde").text(Math.round(sde.netopalk - currentNet));
-		tr.select(".ref").text(Math.round(reform.netopalk - currentNet));
 		tr.select(".ekre").text(Math.round(ekre.netopalk - currentNet));
+		
+		//Update gains for parties with ranges
+		//SDE
+		var sde_gain = sde.netopalk - currentNet;
+		var sde_sm_gain = sde_sm.netopalk - currentNet;
+		if(Math.abs(sde_gain - sde_sm_gain) > 1) {
+			var sde_smaller = Math.round(Math.min(sde_gain, sde_sm_gain));
+			var sde_larger = Math.round(Math.max(sde_gain, sde_sm_gain));
+			var sdeText = sde_smaller + "..." + sde_larger;
+		} else {
+			var sdeText = "" + Math.round(sde_gain);
+		}
+		tr.select(".sde").text(sdeText);
+		
+		//Reform
+		var ref_gain = reform.netopalk - currentNet;
+		var ref_sm_gain = reform_sm.netopalk - currentNet;
+		if(Math.abs(ref_gain - ref_sm_gain) > 1) {
+			var ref_smaller = Math.round(Math.min(ref_gain, ref_sm_gain));
+			var ref_larger = Math.round(Math.max(ref_gain, ref_sm_gain));
+			var refText = ref_smaller + "..." + ref_larger;
+		} else {
+			var refText = "" + Math.round(ref_gain);
+		}
+		tr.select(".ref").text(refText);
 	}
 	
 	function updateTableTaxNumbers() {
