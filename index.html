@@ -4,6 +4,7 @@
 		<meta charset="utf-8">
 		<title>Maksulubaduste kalkulaator</title>
 		<script type="text/javascript" src="lib/d3.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="normalize.css">
 		<link href='http://fonts.googleapis.com/css?family=PT+Sans:400,700' rel='stylesheet' type='text/css'>
 		<style type="text/css">
 		
@@ -21,6 +22,7 @@
 				display: inline-block;
 				vertical-align: top;
 				width: 500px;
+				margin-left: 40px;
 			}
 			
 			div#graph_div text {
@@ -113,6 +115,28 @@
 			  stroke-width: 1.25px;
 			  cursor: crosshair;
 			}
+			
+			table, th, td {
+				border: 1px solid black;
+				border-collapse: collapse;
+			}
+			
+			td {
+				text-align: center;
+			}
+			
+			td.rowLabel {
+				text-align: left;
+			}
+			
+			th, td {
+				padding: 5px;
+			}
+			
+			th, td.rowLabel {
+				font-weight: bold;
+				background-color: #ccc;
+			}
 
 		</style>
 	</head>
@@ -138,8 +162,52 @@
 			<p><span id="value">100</span>€</p>
 		</div>
 		</div>
-		</div>
 		
+		<div id="tablediv">
+		<table style="width:100%">
+			<tr>
+				<th style="background-color: #666;"></th>
+				<th>Praegu</th>
+				<th>IRL</th>		
+				<th>SDE</th>
+				<th>Ref</th>
+				<th>EKRE</th>
+				<th>Kesk</th>
+				<th>Vaba</th>
+			</tr>
+			<tr id="netSalary">
+				<td class="rowLabel">Netopalk</td>
+				<td></td>		
+				<td></td>
+				<td></td>		
+				<td></td>
+				<td></td>		
+				<td>?</td>
+				<td>?</td>
+			</tr>
+			<tr id="gain">
+				<td class="rowLabel">Võit</td>
+				<td></td>		
+				<td></td>
+				<td></td>		
+				<td></td>
+				<td></td>		
+				<td>?</td>
+				<td>?</td>
+			</tr>
+			<tr id="taxNumbers">
+				<td class="rowLabel">TM%<br />MV<br />SM%</td>
+				<td></td>		
+				<td></td>
+				<td></td>		
+				<td></td>
+				<td></td>		
+				<td>?<br />?<br />?</td>
+				<td>?<br />?<br />?</td>
+			</tr>
+		</table>
+		</div>		
+		</div>
 		
 		<script type="text/javascript">
 			var children = 0;
