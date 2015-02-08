@@ -192,21 +192,21 @@
 			</tr>
 			<tr id="gain">
 				<td class="rowLabel">Võit</td>
-				<td></td>		
-				<td></td>
-				<td></td>		
-				<td></td>
-				<td></td>		
-				<td>?</td>
-				<td>?</td>
+				<td class="now"></td>		
+				<td class="irl"></td>
+				<td class="sde"></td>		
+				<td class="ref"></td>
+				<td class="ekre"></td>		
+				<td class="kesk">?</td>
+				<td class="vaba">?</td>
 			</tr>
 			<tr id="taxNumbers">
-				<td class="rowLabel">TM%<br />MV<br />SM%</td>
-				<td></td>		
-				<td></td>
-				<td></td>		
-				<td></td>
-				<td></td>		
+				<td class="rowLabel">MV<br />TM%<br />SM%</td>
+				<td class="now"></td>		
+				<td class="irl"></td>
+				<td class="sde"></td>		
+				<td class="ref"></td>
+				<td class="ekre"></td>		
 				<td>?<br />?<br />?</td>
 				<td>?<br />?<br />?</td>
 			</tr>
@@ -630,13 +630,33 @@
 		.call(brush.extent([initialSalary, initialSalary]))
 		.call(brush.event);
 		
-	function updateTableNetSalary() {
-		var tr = d3.select("div#table_div").select("table").select("tr#netSalary");
-		tr.select(".now").text(Math.round(currentTaxes.netopalk));
+	function updateTableSalaryAndGain() {
+		//Update net salaries
+		var tr = d3.select("table").select("tr#netSalary");
+		var currentNet = currentTaxes.netopalk;
+		tr.select(".now").text(Math.round(currentNet));
 		tr.select(".irl").text(Math.round(irl.netopalk));
 		tr.select(".sde").text(Math.round(sde.netopalk));
 		tr.select(".ref").text(Math.round(reform.netopalk));
-		tr.select(".ekre").text(Math.round(ekre.netopalk));	
+		tr.select(".ekre").text(Math.round(ekre.netopalk));
+		
+		//Update gains
+		var tr = d3.select("table").select("tr#gain");
+		tr.select(".now").text(0);
+		tr.select(".irl").text(Math.round(irl.netopalk - currentNet));
+		tr.select(".sde").text(Math.round(sde.netopalk - currentNet));
+		tr.select(".ref").text(Math.round(reform.netopalk - currentNet));
+		tr.select(".ekre").text(Math.round(ekre.netopalk - currentNet));
+	}
+	
+	function updateTableTaxNumbers() {
+		var tr = d3.select("table").select("tr#taxNumbers");
+		tr.select(".now").html(Math.round(currentTaxes.maksuvaba) + "€<br />" + currentTaxes.tm.toFixed(2)*100 + "%<br />" + currentTaxes.sm.toFixed(2)*100 + "%");
+		tr.select(".irl").html(Math.round(irl.maksuvaba) + "€<br />" + irl.tm.toFixed(2)*100 + "%<br />" + irl.sm.toFixed(2)*100 + "%");
+		tr.select(".sde").html(Math.round(sde.maksuvaba) + "€<br />" + sde.tm.toFixed(2)*100 + "%<br />" + sde.sm.toFixed(2)*100 + "%");
+		tr.select(".ref").html(Math.round(reform.maksuvaba) + "€<br />" + reform.tm.toFixed(2)*100 + "%<br />" + reform.sm.toFixed(2)*100 + "%");
+		tr.select(".ekre").html(Math.round(ekre.maksuvaba) + "€<br />" + ekre.tm.toFixed(2)*100 + "%<br />" + ekre.sm.toFixed(2)*100 + "%");
+		
 	}
 	
 	function updateGraph(salary, children, check1, check2, check3) {
@@ -696,8 +716,8 @@
 		currentTaxes.fun(salary, children, check1, check2, check3);
 		
 		//Update table
-		updateTableNetSalary();
-		
+		updateTableSalaryAndGain();
+		updateTableTaxNumbers();
 		}
 
 	function brushed() {
