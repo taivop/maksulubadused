@@ -180,12 +180,12 @@
 		<h1>Maksulubaduste kalkulaator</h1>
 		<div id="inputs">
 		<form action="javascript:void(0);">
-			<p style="text-align: justify;"><strong>Täida lüngad oma andmetega ja vaata, mida erakonnad sulle lubavad:</strong></p>
+			<p style="text-align: justify;"><strong>Täida lüngad oma andmetega ja vaata, mida erakondade lubadused 2015. aasta Riigikogu valimistel sinu palgale tähendavad:</strong></p>
 			<input type="checkbox" id="checkbox1" class="input_cb" name="checkbox1" value="cb1">Elan ja töötan maal.<br>
-			<input type="checkbox" id="checkbox2" class="input_cb" name="checkbox2" value="cb2">Olen noor, õppur või pensionär.<br>
-			<input type="checkbox" id="checkbox3" class="input_cb" name="checkbox3" value="cb3">Olen liitunud II pensionisambaga.<br>
+			<input type="checkbox" id="checkbox2" class="input_cb" name="checkbox2" value="cb2">Olen noor, õppur, eakas või piiratud töövõimega.<br>
+			<input type="checkbox" id="checkbox3" class="input_cb" name="checkbox3" value="cb3" checked>Olen liitunud II pensionisambaga.<br>
 			<p>Mul on <input type="number" id="children" min="0" name="children" value="0" style="width:40px;"> last.</p>
-			<p>Minu brutopalk on <span id="bruto_display" name="bruto_display">0</span>€ (lohista teljel õigesse kohta!).</p>
+			<p>Minu brutopalk on <span id="bruto_display" name="bruto_display">0</span>€ kuus (lohista teljel õigesse kohta!).</p>
 		</form>
 		<svg id="slider"></svg>
 		</div>
@@ -263,7 +263,7 @@
 			var salary = initialSalary;
 			var check1 = 0;
 			var check2 = 0;
-			var check3 = 0;
+			var check3 = 1;
 			
 			//Set initial value in DOM
 			d3.select("#children").attr("value", children);
