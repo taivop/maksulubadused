@@ -147,6 +147,11 @@
 				text-align: right;
 			}
 			
+			tr#fullName td:not(.rowLabel) {
+				font-size: 13px;
+				overflow:hidden;
+			}
+			
 			th, td {
 				padding: 5px;
 			}
@@ -210,6 +215,16 @@
 				<th style="background: rgba(0, 119, 189, 0.8);">EKRE</th>
 				<th>Kesk</th>
 				<th>Vaba</th>
+			</tr>
+			<tr id="fullName">
+				<td class="rowLabel">Erakonna nimi</td>
+				<td class="now"></td>		
+				<td class="irl">Isamaa ja Res Publica Liit</td>
+				<td class="sde">Sotsiaaldemokraatlik Erakond</td>		
+				<td class="re">Reformierakond</td>
+				<td class="ekre">Eesti Konservatiivne Rahvaerakond</td>		
+				<td class="kesk">Keskerakond</td>
+				<td class="vaba">Eesti Vabaerakond</td>
 			</tr>
 			<tr id="netSalary">
 				<td class="rowLabel">Netopalk</td>
