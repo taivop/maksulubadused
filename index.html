@@ -313,6 +313,21 @@
 				}
 			};
 			
+			var empty = {
+				sm: 0,
+				tm: 0,
+				maksuvaba: 0,
+				netopalk: 0,
+				fun: function(bruto, lapsi, maal, soodusgrupp, sammas) { 
+					return 0;
+				},
+				name: "",
+				abbr: "",
+				explain: "",
+				color: "#fff",
+				opacity: 0
+			};
+			
 			var ekre = {
 				sm: 0,
 				tm: 0,
@@ -467,7 +482,7 @@
 				opacity: 0.5
 			};
 			
-			erakonnad = [irl, irl_sm, sde, sde_sm, reform, reform_sm, ekre, ekre_sm];
+			erakonnad = [irl, irl_sm, empty, sde, sde_sm, empty, reform, reform_sm, empty, ekre, ekre_sm];
 		
 			//Initial values for dataset
 			dataset = [];
