@@ -277,8 +277,11 @@
 		<div id="longText">
 		<h1>Mingi seletus</h1>
 		<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed commodo est et nisi dapibus feugiat. Donec aliquet, nisi sed auctor bibendum, erat nisi condimentum sem, ac tempor libero ligula vel urna. Nunc nec nibh id diam egestas tincidunt eu vitae nunc.</p>
+		<p id="openHiddenText"><strong style="text-decoration: underline;">Kliki siia, et näha põhjalikumat metoodika kirjeldust.</strong></p>
+		<div id="hiddenText">
 		<p>Nulla a cursus metus. Proin nisl arcu, dictum quis augue iaculis, porta venenatis tellus. Duis neque dui, fermentum non mauris sit amet, sagittis varius enim. Mauris vehicula facilisis velit in malesuada. Integer sagittis sollicitudin varius.</p>
 		<p>Curabitur posuere rutrum augue vitae iaculis. Cras tincidunt nisl tellus. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. In hac habitasse platea dictumst.</p>
+		</div>
 		</div>
 		<div id="authors">
 		<h1>Autorid</h1>
@@ -295,8 +298,13 @@
 			var check2 = 0;
 			var check3 = 1;
 			
+			var longTextIsOpen = false;
+			
 			//Set initial value in DOM
 			d3.select("#children").attr("value", children);
+			
+			//Close hiddenText
+			d3.select("div#longText").select("div#hiddenText").style("display", "none");
 		
 			//Arvuta netopalk vastavalt argumentidele
 			netSalary = function(bruto, tm, maksuvaba, sammas) {
@@ -877,6 +885,21 @@
 	  handle.attr("cx", x(salary));
 	  updateGraph(salary, children, check1, check2, check3);
 	}
+	
+	//Open and close hidden text on click
+	d3.select("div#longText").select("p#openHiddenText")
+		.on("click", function() {
+			console.log(longTextIsOpen);
+			var longText = d3.select("div#longText").select("div#hiddenText");
+			if (longTextIsOpen) {
+				longText.style("display", "none");
+				longTextIsOpen = false;
+			} else {
+				longText.style("display", "inline");
+				longText.attr("style", "margin-left: 20px; padding: 1px 15px 1px 15px; background-color: #eee;");
+				longTextIsOpen = true;
+			}
+		});
 	</script>
 	
 	
