@@ -8,6 +8,15 @@
 		<link href='http://fonts.googleapis.com/css?family=PT+Sans:400,700' rel='stylesheet' type='text/css'>
 		<style type="text/css">
 		
+			a:link, a:visited, a:hover {
+				color: black;
+				text-decoration: underline;
+			}
+			
+			a:active {
+				color: gray;
+			}
+		
 			div#contents {
 				position: relative;
 				width: 1000px;
@@ -120,6 +129,7 @@
 				table-layout:fixed;
 				width: 100%;
 				margin-top: 10px;
+				margin-bottom: 50px;
 			}
 			
 			table, th, td {
@@ -142,6 +152,24 @@
 			th, td.rowLabel {
 				font-weight: bold;
 				background-color: #ccc;
+			}
+			
+			div#longText {
+				width: 50%;
+				/*display: inline-block;*/
+				text-align: justify;
+			}
+			
+			div#authors {
+				width: 40%;
+				margin-bottom: 100px;
+				/*margin-left: 9%;
+				display: inline-block;*/
+				vertical-align: top;
+			}
+			
+			div#authors p {
+				margin: 0px;
 			}
 
 		</style>
@@ -192,7 +220,7 @@
 				<td class="vaba">?</td>
 			</tr>
 			<tr id="gain">
-				<td class="rowLabel">Võit</td>
+				<td class="rowLabel">Sinu võit</td>
 				<td class="now"></td>		
 				<td class="irl"></td>
 				<td class="sde"></td>		
@@ -202,7 +230,7 @@
 				<td class="vaba">?</td>
 			</tr>
 			<tr id="taxNumbers">
-				<td class="rowLabel">MV<br />TM%<br />SM%</td>
+				<td class="rowLabel">Maksuvaba tulu<br />Tulumaks<br />Sotsiaalmaks</td>
 				<td class="now"></td>		
 				<td class="irl"></td>
 				<td class="sde"></td>		
@@ -212,7 +240,20 @@
 				<td>?<br />?<br />?</td>
 			</tr>
 		</table>
-		</div>		
+		</div>
+		
+		<div id="longText">
+		<h1>Mingi seletus</h1>
+		<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed commodo est et nisi dapibus feugiat. Donec aliquet, nisi sed auctor bibendum, erat nisi condimentum sem, ac tempor libero ligula vel urna. Nunc nec nibh id diam egestas tincidunt eu vitae nunc.</p>
+		<p>Nulla a cursus metus. Proin nisl arcu, dictum quis augue iaculis, porta venenatis tellus. Duis neque dui, fermentum non mauris sit amet, sagittis varius enim. Mauris vehicula facilisis velit in malesuada. Integer sagittis sollicitudin varius.</p>
+		<p>Curabitur posuere rutrum augue vitae iaculis. Cras tincidunt nisl tellus. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. In hac habitasse platea dictumst.</p>
+		</div>
+		<div id="authors">
+		<h1>Autorid</h1>
+		<p><strong>Taivo Pungas</strong>, <a href ="http://pungas.ee">andmeteadlane</a> ja <a href="https://twitter.com/tpungas">säutsuja</a></p>
+		<p><strong>Taavi Pungas</strong></p>
+		<p><strong>Kadri Vakmann</strong></p>
+		</div>
 		</div>
 		
 		<script type="text/javascript">
@@ -579,8 +620,6 @@
 		</script>
 		
 		<script>
-		// from http://bl.ocks.org/mbostock/6452972
-
 	var margin = {top: 0, right: 15, bottom: 0, left: 10},
 		width = 400,
 		height = 40 - margin.bottom - margin.top;
@@ -635,36 +674,36 @@
 		//Update net salaries
 		var tr = d3.select("table").select("tr#netSalary");
 		var currentNet = currentTaxes.netopalk;
-		tr.select(".now").text(Math.round(currentNet));
-		tr.select(".irl").text(Math.round(irl.netopalk));
-		tr.select(".ekre").text(Math.round(ekre.netopalk));
+		tr.select(".now").text(Math.round(currentNet) + "€");
+		tr.select(".irl").text(Math.round(irl.netopalk) + "€");
+		tr.select(".ekre").text(Math.round(ekre.netopalk) + "€");
 		
 		//Update net salaries for parties with ranges
 		//SDE
 		if(Math.abs(sde.netopalk - sde_sm.netopalk) > 1) {
 			var sde_smaller = Math.round(Math.min(sde.netopalk, sde_sm.netopalk));
 			var sde_larger = Math.round(Math.max(sde.netopalk, sde_sm.netopalk));
-			var sdeText = sde_smaller + "..." + sde_larger;
+			var sdeText = sde_smaller + "..." + sde_larger + "€";
 		} else {
-			var sdeText = "" + Math.round(sde.netopalk);
+			var sdeText = Math.round(sde.netopalk) + "€";
 		}
 		tr.select(".sde").text(sdeText);
 		//Reform
 		if(Math.abs(reform.netopalk - reform_sm.netopalk) > 1) {
 			var ref_smaller = Math.round(Math.min(reform.netopalk, reform_sm.netopalk));
 			var ref_larger = Math.round(Math.max(reform.netopalk, reform_sm.netopalk));
-			var refText = ref_smaller + "..." + ref_larger;
+			var refText = ref_smaller + "..." + ref_larger + "€";
 		} else {
-			var refText = "" + Math.round(reform.netopalk);
+			var refText = Math.round(reform.netopalk) + "€";
 		}
 		tr.select(".ref").text(refText);
 		
 		
 		//Update gains
 		var tr = d3.select("table").select("tr#gain");
-		tr.select(".now").text(0);
-		tr.select(".irl").text(Math.round(irl.netopalk - currentNet));
-		tr.select(".ekre").text(Math.round(ekre.netopalk - currentNet));
+		tr.select(".now").text(0 + "€");
+		tr.select(".irl").text(Math.round(irl.netopalk - currentNet) + "€");
+		tr.select(".ekre").text(Math.round(ekre.netopalk - currentNet) + "€");
 		
 		//Update gains for parties with ranges
 		//SDE
@@ -673,9 +712,9 @@
 		if(Math.abs(sde_gain - sde_sm_gain) > 1) {
 			var sde_smaller = Math.round(Math.min(sde_gain, sde_sm_gain));
 			var sde_larger = Math.round(Math.max(sde_gain, sde_sm_gain));
-			var sdeText = sde_smaller + "..." + sde_larger;
+			var sdeText = sde_smaller + "..." + sde_larger  + "€";
 		} else {
-			var sdeText = "" + Math.round(sde_gain);
+			var sdeText = Math.round(sde_gain)  + "€";
 		}
 		tr.select(".sde").text(sdeText);
 		
@@ -685,9 +724,9 @@
 		if(Math.abs(ref_gain - ref_sm_gain) > 1) {
 			var ref_smaller = Math.round(Math.min(ref_gain, ref_sm_gain));
 			var ref_larger = Math.round(Math.max(ref_gain, ref_sm_gain));
-			var refText = ref_smaller + "..." + ref_larger;
+			var refText = ref_smaller + "..." + ref_larger  + "€";
 		} else {
-			var refText = "" + Math.round(ref_gain);
+			var refText = Math.round(ref_gain)  + "€";
 		}
 		tr.select(".ref").text(refText);
 	}
