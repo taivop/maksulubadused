@@ -57,6 +57,7 @@
 			
 			div#inputs {
 				display: inline-block;
+				margin-top: 20px;
 				width: 450px;
 			}
 					
@@ -145,7 +146,7 @@
 			table {
 				table-layout:fixed;
 				width: 100%;
-				margin-top: 50px;
+				margin-top: 10px;
 				margin-bottom: 50px;
 			}
 			
@@ -547,9 +548,9 @@
 
 			//Width and height
 			var w = 500;
-			var h = 250;
+			var h = 300;
 			var paddingBottom = 40;
-			var paddingTop = 10;
+			var paddingTop = 70;
 			var paddingLeft = 50;
 			var paddingRight = 20;
 
@@ -575,6 +576,25 @@
 						.attr("width", w)
 						.attr("height", h);
 						
+			//Create title
+	
+			var titleX = d3.mean(xScale.range());
+			var titleText = svg_graph.append("text")
+				.attr("text-anchor", "middle")
+				.attr("x", titleX)
+				.attr("y", 30)
+				.style("font-size", "14px")
+				.style("font-weight", "bold");
+			
+			titleText.append("tspan")
+				.attr("x", titleX)
+				.text("Sinu igakuine võit tulumaksult (iga erakonna vasak tulp) ning");
+				
+			titleText.append("tspan")
+				.attr("x", titleX)
+				.attr("dy", 20)
+				.text("maksimaalne võimalik võit sotsiaal- ja tulumaksult (parem tulp).");
+						
 			// Create y=0 line
 			var y0Line = d3.select("svg#graph")
 				.append("line")
@@ -586,13 +606,14 @@
 				
 				
 			//Create bar labels
-			svg_graph.selectAll("text")
+			svg_graph.selectAll(".labelText")
 			   .data(erakonnad.map(function(d) { return d.abbr; }))
 			   .enter()
 			   .append("text")
 			   .text(function(d, i) { return d; })
 			   .attr("text-anchor", "middle")
 			   .attr("x", function(d, i) {
+					console.log(i + " " + d);
 			   		return xScale(i) + 0.5 * xScale.rangeBand();
 			   })
 			   .attr("style", function(d, i) {
