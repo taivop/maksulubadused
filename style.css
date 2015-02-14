@@ -1,0 +1,174 @@
+﻿a:link, a:visited, a:hover {
+	color: black;
+	text-decoration: underline;
+}
+
+a:active {
+	color: gray;
+}
+
+div#contents {
+	position: relative;
+	width: 1000px;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 50px;
+	padding-left: 20px;
+	font-family: "PT Sans";
+}
+
+div#graph_div {
+	position: relative;
+	display: inline-block;
+	vertical-align: top;
+	width: 500px;
+	margin-left: 40px;
+	margin-top: 15px;
+}
+
+div#graph_div text {
+	shape-rendering: crispEdges;
+}
+
+div#inputs {
+	display: inline-block;
+	margin-top: 19px;
+	width: 450px;
+}
+
+div#inputs p {
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+div#inputs .input_cb {
+	margin-right: 5px;
+}
+
+rect:hover {
+	fill: #aaa;
+}
+
+.axis path,
+.axis line {
+	fill: none;
+	stroke: black;
+	shape-rendering: crispEdges;
+}
+
+.axis text {
+	font-size: 16px;
+}
+
+#tooltip {
+	position: absolute;
+	width: 210px;
+	height: auto;
+	padding: 10px;
+	background-color: white;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+	-webkit-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+	-moz-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+	box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+	pointer-events: none;
+}
+
+#tooltip.hidden {
+	display: none;
+}
+
+#tooltip p {
+	margin: 0;
+	font-family: sans-serif;
+	font-size: 16px;
+	line-height: 20px;
+}
+
+
+
+.axis_slider {
+	font: 10px sans-serif;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	user-select: none;
+}
+
+.axis_slider .domain {
+	fill: none;
+	stroke: #000;
+	stroke-opacity: .3;
+	stroke-width: 10px;
+	stroke-linecap: round;
+}
+
+.axis_slider .halo {
+	fill: none;
+	stroke: #ddd;
+	stroke-width: 8px;
+	stroke-linecap: round;
+}
+
+.slider .handle {
+	fill: #fff;
+	stroke: #000;
+	stroke-opacity: .5;
+	stroke-width: 1.25px;
+	cursor: crosshair;
+}
+
+table {
+	table-layout:fixed;
+	width: 100%;
+	margin-top: 10px;
+	margin-bottom: 50px;
+}
+
+table, th, td {
+	border: 1px solid black;
+	border-collapse: collapse;
+}
+
+td {
+	text-align: center;
+}
+
+td.rowLabel {
+	text-align: right;
+}
+
+tr#fullName td:not(.rowLabel) {
+	font-size: 13px;
+	overflow:hidden;
+}
+
+th, td {
+	padding: 5px;
+}
+
+th, td.rowLabel {
+	font-weight: bold;
+	background-color: #ccc;
+}
+
+tr#gain {
+	font-weight: bold;
+}
+
+div#longText {
+	width: 100%;
+	/*display: inline-block;*/
+	text-align: justify;
+}
+
+div#authors {
+	width: 100%;
+	margin-bottom: 100px;
+	vertical-align: top;
+}
+
+div#authors p.author {
+	margin-top: 6px;
+	margin-bottom: 6px;
+}

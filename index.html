@@ -19,320 +19,145 @@
 		
 		<title>Maksulubaduste kalkulaator</title>
 		<link rel="stylesheet" type="text/css" href="normalize.css">
+		<link rel="stylesheet" type="text/css" href="style.css">
 		<link href='http://fonts.googleapis.com/css?family=PT+Sans:400,700' rel='stylesheet' type='text/css'>
 		<script type="text/javascript" src="lib/d3.min.js"></script>
-		<style type="text/css">
-		
-			a:link, a:visited, a:hover {
-				color: black;
-				text-decoration: underline;
-			}
-			
-			a:active {
-				color: gray;
-			}
-		
-			div#contents {
-				position: relative;
-				width: 1000px;
-				margin-left: auto;
-				margin-right: auto;
-				margin-top: 50px;
-				padding-left: 20px;
-				font-family: "PT Sans";
-			}
-			
-			div#graph_div {
-				position: relative;
-				display: inline-block;
-				vertical-align: top;
-				width: 500px;
-				margin-left: 40px;
-				margin-top: 15px;
-			}
-			
-			div#graph_div text {
-				shape-rendering: crispEdges;
-			}
-			
-			div#inputs {
-				display: inline-block;
-				margin-top: 19px;
-				width: 450px;
-			}
-					
-			div#inputs p {
-				margin-top: 10px;
-				margin-bottom: 10px;
-			}
-			
-			div#inputs .input_cb {
-				margin-right: 5px;
-			}
-
-			rect:hover {
-				fill: #aaa;
-			}
-			
-			.axis path,
-			.axis line {
-				fill: none;
-				stroke: black;
-				shape-rendering: crispEdges;
-			}
-			
-			.axis text {
-				font-size: 16px;
-			}
-			
-			#tooltip {
-				position: absolute;
-				width: 210px;
-				height: auto;
-				padding: 10px;
-				background-color: white;
-				-webkit-border-radius: 10px;
-				-moz-border-radius: 10px;
-				border-radius: 10px;
-				-webkit-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
-				-moz-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
-				box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
-				pointer-events: none;
-			}
-			
-			#tooltip.hidden {
-				display: none;
-			}
-			
-			#tooltip p {
-				margin: 0;
-				font-family: sans-serif;
-				font-size: 16px;
-				line-height: 20px;
-			}
-			
-			
-			
-			.axis_slider {
-			  font: 10px sans-serif;
-			  -webkit-user-select: none;
-			  -moz-user-select: none;
-			  user-select: none;
-			}
-
-			.axis_slider .domain {
-			  fill: none;
-			  stroke: #000;
-			  stroke-opacity: .3;
-			  stroke-width: 10px;
-			  stroke-linecap: round;
-			}
-
-			.axis_slider .halo {
-			  fill: none;
-			  stroke: #ddd;
-			  stroke-width: 8px;
-			  stroke-linecap: round;
-			}
-
-			.slider .handle {
-			  fill: #fff;
-			  stroke: #000;
-			  stroke-opacity: .5;
-			  stroke-width: 1.25px;
-			  cursor: crosshair;
-			}
-			
-			table {
-				table-layout:fixed;
-				width: 100%;
-				margin-top: 10px;
-				margin-bottom: 50px;
-			}
-			
-			table, th, td {
-				border: 1px solid black;
-				border-collapse: collapse;
-			}
-			
-			td {
-				text-align: center;
-			}
-			
-			td.rowLabel {
-				text-align: right;
-			}
-			
-			tr#fullName td:not(.rowLabel) {
-				font-size: 13px;
-				overflow:hidden;
-			}
-			
-			th, td {
-				padding: 5px;
-			}
-			
-			th, td.rowLabel {
-				font-weight: bold;
-				background-color: #ccc;
-			}
-			
-			tr#gain {
-				font-weight: bold;
-			}
-			
-			div#longText {
-				width: 100%;
-				/*display: inline-block;*/
-				text-align: justify;
-			}
-			
-			div#authors {
-				width: 100%;
-				margin-bottom: 100px;
-				vertical-align: top;
-			}
-			
-			div#authors p.author {
-				margin-top: 6px;
-				margin-bottom: 6px;
-			}
-
-		</style>
 	</head>
 	<body>
 		<script> // Google Analytics
-		  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-		  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-		  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-		  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-		  ga('create', 'UA-37828611-3', 'auto');
-		  ga('send', 'pageview');
+			(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+			(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+			m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+			})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+			
+			ga('create', 'UA-37828611-3', 'auto');
+			ga('send', 'pageview');
 		</script>
 		<div id="contents">
-		<h1>Maksulubaduste kalkulaator</h1>
-		<div id="inputs">
-		<form action="javascript:void(0);">
-			<p style="text-align: justify;"><strong>Täida lüngad oma andmetega ja vaata, mida erakondade lubadused 2015. aasta Riigikogu valimistel sinu palgale tähendavad:</strong></p>
-			<input type="checkbox" id="checkbox1" class="input_cb" name="checkbox1" value="cb1">Elan ja töötan väljaspool Harjumaad.<br>
-			<input type="checkbox" id="checkbox2" class="input_cb" name="checkbox2" value="cb2">Olen noor, õppur, eakas või piiratud töövõimega.<br>
-			<input type="checkbox" id="checkbox3" class="input_cb" name="checkbox3" value="cb3" checked>Olen liitunud II pensionisambaga.<br>
-			<p>Kasvatan <input type="number" id="children" min="0" name="children" value="0" style="width:40px;"> last.</p>
-			<p>Minu brutopalk on <strong><span id="bruto_display" name="bruto_display">0</span>€</strong> kuus (lohista teljel õigesse kohta!).</p>
-		</form>
-		<svg id="slider"></svg>
-		</div>
-		<div id="graph_div">
-		<svg id="graph"></svg>
-		<div id="tooltip" class="hidden">
-			<p><strong>Erakond</strong></p>
-			<p id="explainText">...</p>
-			<p><span id="value">100</span>€</p>
-		</div>
+			<h1>Maksulubaduste kalkulaator</h1>
+			<div id="inputs">
+				<form action="javascript:void(0);">
+					<p style="text-align: justify;"><strong>Täida lüngad oma andmetega ja vaata, mida erakondade lubadused 2015. aasta Riigikogu valimistel sinu palgale tähendavad:</strong></p>
+					<input type="checkbox" id="checkbox1" class="input_cb" name="checkbox1" value="cb1">Elan ja töötan väljaspool Harjumaad.<br>
+					<input type="checkbox" id="checkbox2" class="input_cb" name="checkbox2" value="cb2">Olen noor, õppur, eakas või piiratud töövõimega.<br>
+					<input type="checkbox" id="checkbox3" class="input_cb" name="checkbox3" value="cb3" checked>Olen liitunud II pensionisambaga.<br>
+					<p>Kasvatan <input type="number" id="children" min="0" name="children" value="0" style="width:40px;"> last.</p>
+					<p>Minu brutopalk on <strong><span id="bruto_display" name="bruto_display">0</span>€</strong> kuus (lohista teljel õigesse kohta!).</p>
+				</form>
+				<svg id="slider"></svg>
+			</div>
+			<div id="graph_div">
+				<svg id="graph"></svg>
+				<div id="tooltip" class="hidden">
+					<p><strong>Erakond</strong></p>
+					<p id="explainText">...</p>
+					<p><span id="value">100</span>€</p>
+				</div>
+			</div>
+			
+			<div id="table_div">
+				<table>
+					<tr>
+						<th style="background-color: #888;"></th>
+						<th>Praegu</th>
+						<th style="background: rgba(0, 149, 206, 0.8);">IRL</th>		
+						<th style="background: rgba(170, 11, 4, 0.8);">SDE</th>
+						<th style="background: rgba(255, 226, 0, 1);">RE</th>
+						<th style="background: rgba(0, 119, 189, 0.8);">EKRE</th>
+						<th>Kesk</th>
+						<th>Vaba</th>
+					</tr>
+					<tr id="fullName">
+						<td class="rowLabel">Erakonna nimi</td>
+						<td class="now"></td>		
+						<td class="irl">Isamaa ja Res Publica Liit</td>
+						<td class="sde">Sotsiaaldemokraatlik Erakond</td>		
+						<td class="re">Reformierakond</td>
+						<td class="ekre">Eesti Konservatiivne Rahvaerakond</td>		
+						<td class="kesk">Keskerakond</td>
+						<td class="vaba">Eesti Vabaerakond</td>
+					</tr>
+					<tr id="netSalary">
+						<td class="rowLabel">Netopalk</td>
+						<td class="now"></td>		
+						<td class="irl"></td>
+						<td class="sde"></td>		
+						<td class="re"></td>
+						<td class="ekre"></td>		
+						<td class="kesk">?</td>
+						<td class="vaba">?</td>
+					</tr>
+					<tr id="gain">
+						<td class="rowLabel">Sinu võit</td>
+						<td class="now"></td>		
+						<td class="irl"></td>
+						<td class="sde"></td>		
+						<td class="re"></td>
+						<td class="ekre"></td>		
+						<td class="kesk">?</td>
+						<td class="vaba">?</td>
+					</tr>
+					<tr id="taxNumbers">
+						<td class="rowLabel">Maksuvaba tulu<br />Tulumaks<br />Sotsiaalmaks</td>
+						<td class="now"></td>		
+						<td class="irl"></td>
+						<td class="sde"></td>		
+						<td class="re"></td>
+						<td class="ekre"></td>		
+						<td>?<br />?<br />?</td>
+						<td>?<br />?<br />?</td>
+					</tr>
+				</table>
+			</div>
+			
+			<div id="longText">
+				<h1>Selgitus</h1>
+				<p>Kalkulaator illustreerib 2015. aasta Riigikogu valimistel täisnimekirjaga kandideerivate erakondade valimislubadusi tulu- ja sotsiaalmaksu osas. Arvesse on võetud ainult valimisprogrammides kirjeldatud lubadused, mis on arvutamiseks piisavalt konkreetselt sõnastatud. Maksimaalne võimalik võit sotsiaalmaksu muutumisest on leitud eeldusel, et tööandja kulu jääb samaks kui praegu ning brutopalk tõuseb sellele vastavalt. Arvutuses on kasutatud praegu kehtivaid töötuskindlustusmakse määrasid (töötaja 1,6%, tööandja 0,8%) ja II pensionisamba makset 2%.</p>
+				<p id="openHiddenText"><strong style="text-decoration: underline;">Kliki siia, et näha kalkulaatori aluseks olevaid erakondade maksulubadusi.</strong></p>
+				<div id="hiddenText">
+					<i>Kaldkirjas</i> esitatud lubadused ei olnud piisavalt konkreetselt sõnastatud, et neid kalkulaatoris arvestada.
+					<h3>Isamaa ja Res Publica Liit<sup><a href="http://www.irl.ee/mida-me-teeme/majandus-maksud-ja-sissetulekud">1</a></sup></h3>
+					<p>Muudame tulumaksu reegleid nii, et kuni 500 eurot kuus teeniv töötaja on tulumaksust vabastatud ja 500–846 eurot teenivatel töötajatel on tänasest suurem maksuvaba tulu. Madalapalgaliste maksuvabastus jätab madalapalgalistele töötajatele senisest rohkem teenitud tulu kätte. Madalapalgaliste maksuvabastuse rakendamisega ei kaotata ega piirata ühtegi muud seadusega lubatud tulust mahaarvamist.</p><p><i>Seame kõrgepalgaliste, nn tarkade töökohtade loomise soodustamiseks sotsiaalmaksule lae. Eesti keskmisest palgast kolm korda suurema palgaga töötaja palgalt tasutav sotsiaalmaks ei tohi Eestis olla kõrgem kui Soomes, Lätis või Suurbritannias.</i></p>
+					<h3>Sotsiaaldemokraatlik Erakond<sup><a href="http://valimised2015.sotsdem.ee/est/valimisprogramm">2</a></sup></h3>
+					<p>Soodustame noorte, õppurite, piiratud töövõimega inimestega ja eakate tööhõives osalemist, selleks langetame nende eest makstavat sotsiaalmaksu 13% võrra.</p>
+					<p>Regionaalsete töökohtade loomiseks langetame sotsiaalmaksumäära 33%-lt 30%-ni nende töötajate puhul, kelle elu- ja töökoht asuvad väljaspool Harjumaad.</p>
+					<p>Kehtestame täiendava tulumaksumäära (29%) tulule, mis ületab 1600 eurot kuus. Korrigeerime seda vastavalt keskmise palga tõusule.</p>
+					<p><i>Madalama ja keskmise sissetulekuga töötajate maksukoormuse vähendamiseks peame oluliseks tõsta tulumaksuvaba määra regulaarset nii palga kui ka pensionide puhul.</i></p>
+					<h3>Reformierakond<sup><a href="http://www.reform.ee/reformierakonna-valimisprogramm-2015-majandus">3</a></sup></h3>
+					<p>...kahekordistab tulumaksuvaba miinimumi määra, tõstes selle 300 euroni kuus.</p>
+					<p>...vähendab sotsiaalmaksu määra 2% võrra ja muudab selle maksmise ja sellega seotud sotsiaalsete garantiide saamise paindlikumaks.</p>
+					<h3>Eesti Konservatiivne Rahvaerakond<sup><a href="http://onaeg.ekre.ee/programm/">4</a></sup></h3>
+					<p>...kehtestada tulumaksupreemia, kus iga kasvatatava lapse pealt võetakse vanemalt 5% võrra väiksemat tulumaksu.</p>
+					<p>...tõsta maksuvaba miinimum miinimumpalgaga võrdseks.</p>
+					<h3>Keskerakond<sup><a href="http://www.keskerakond.ee/files/Keskerakonna_valimisplatvorm_2015__aasta_Riigikogu_valimisteks.pdf">5</a></sup></h3>
+					<p><i>Kehtestame euroopaliku astmelise tulumaksu. ... Tagame, et astmelise tulumaksu kehtestamisega ei suurene keskklassi maksukoormus.</i></p>
+					<p><i>Tõstame tulumaksuvaba miinimumi.</i></p>
+					<h3>Vabaerakond<sup><a href="http://vabaerakond.ee/eesti-vabaerakonna-luhike-valimisplatvorm">6</a></sup></h3>
+					<p><i>...tulumaksuvaba miinimum 500 euroni, kompenseerides puudujäägi eelarves tulumaksumäära tõusuga.</i></p>
+					<p><i>...alandada tööjõumakse ja kehtestada väiksem sotsiaalmaks, asendades selle riigieelarves ettevõtte tulumaksuga kuni 12%, seades eelduseks, et ettevõtte üldine maksukoormus ei muutu.</i></p>
+					
+					
+				</div>
+			</div>
+			<div id="authors">
+				<h1>Autorid</h1>
+				<p class="author"><a href="https://ee.linkedin.com/pub/taavi-pungas/a8/1b/635">Taavi Pungas</a> (idee ja meetod)</p>
+				<p class="author"><a href ="http://pungas.ee">Taivo Pungas</a> (tehniline teostus)</p>
+				<p>Autorid on näinud vaeva, et kalkulaator oleks erakondade valimisprogrammides esitatud maksulubadustega võimalikult täpses kooskõlas. Sellegipoolest ei saa kalkulaatori tulemusi käsitleda erakondade ametlike seisukohtadena. Vigadest või pretensioonidest palun teatada <a href="mailto:taavi.pungas@eesti.ee">siia</a>.</p>
+				<p>Käesolev töö on avaldatud litsentsi <a href="http://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> all.</p>
+			</div>
 		</div>
 		
-		<div id="table_div">
-		<table>
-			<tr>
-				<th style="background-color: #888;"></th>
-				<th>Praegu</th>
-				<th style="background: rgba(0, 149, 206, 0.8);">IRL</th>		
-				<th style="background: rgba(170, 11, 4, 0.8);">SDE</th>
-				<th style="background: rgba(255, 226, 0, 1);">RE</th>
-				<th style="background: rgba(0, 119, 189, 0.8);">EKRE</th>
-				<th>Kesk</th>
-				<th>Vaba</th>
-			</tr>
-			<tr id="fullName">
-				<td class="rowLabel">Erakonna nimi</td>
-				<td class="now"></td>		
-				<td class="irl">Isamaa ja Res Publica Liit</td>
-				<td class="sde">Sotsiaaldemokraatlik Erakond</td>		
-				<td class="re">Reformierakond</td>
-				<td class="ekre">Eesti Konservatiivne Rahvaerakond</td>		
-				<td class="kesk">Keskerakond</td>
-				<td class="vaba">Eesti Vabaerakond</td>
-			</tr>
-			<tr id="netSalary">
-				<td class="rowLabel">Netopalk</td>
-				<td class="now"></td>		
-				<td class="irl"></td>
-				<td class="sde"></td>		
-				<td class="re"></td>
-				<td class="ekre"></td>		
-				<td class="kesk">?</td>
-				<td class="vaba">?</td>
-			</tr>
-			<tr id="gain">
-				<td class="rowLabel">Sinu võit</td>
-				<td class="now"></td>		
-				<td class="irl"></td>
-				<td class="sde"></td>		
-				<td class="re"></td>
-				<td class="ekre"></td>		
-				<td class="kesk">?</td>
-				<td class="vaba">?</td>
-			</tr>
-			<tr id="taxNumbers">
-				<td class="rowLabel">Maksuvaba tulu<br />Tulumaks<br />Sotsiaalmaks</td>
-				<td class="now"></td>		
-				<td class="irl"></td>
-				<td class="sde"></td>		
-				<td class="re"></td>
-				<td class="ekre"></td>		
-				<td>?<br />?<br />?</td>
-				<td>?<br />?<br />?</td>
-			</tr>
-		</table>
-		</div>
-		
-		<div id="longText">
-		<h1>Selgitus</h1>
-		<p>Kalkulaator illustreerib 2015. aasta Riigikogu valimistel täisnimekirjaga kandideerivate erakondade valimislubadusi tulu- ja sotsiaalmaksu osas. Arvesse on võetud ainult valimisprogrammides kirjeldatud lubadused, mis on arvutamiseks piisavalt konkreetselt sõnastatud. Maksimaalne võimalik võit sotsiaalmaksu muutumisest on leitud eeldusel, et tööandja kulu jääb samaks kui praegu ning brutopalk tõuseb sellele vastavalt. Arvutuses on kasutatud praegu kehtivaid töötuskindlustusmakse määrasid (töötaja 1,6%, tööandja 0,8%) ja II pensionisamba makset 2%.</p>
-		<p id="openHiddenText"><strong style="text-decoration: underline;">Kliki siia, et näha kalkulaatori aluseks olevaid erakondade maksulubadusi.</strong></p>
-		<div id="hiddenText">
-		<i>Kaldkirjas</i> esitatud lubadused ei olnud piisavalt konkreetselt sõnastatud, et neid kalkulaatoris arvestada.
-		<h3>Isamaa ja Res Publica Liit<sup><a href="http://www.irl.ee/mida-me-teeme/majandus-maksud-ja-sissetulekud">1</a></sup></h3>
-		<p>Muudame tulumaksu reegleid nii, et kuni 500 eurot kuus teeniv töötaja on tulumaksust vabastatud ja 500–846 eurot teenivatel töötajatel on tänasest suurem maksuvaba tulu. Madalapalgaliste maksuvabastus jätab madalapalgalistele töötajatele senisest rohkem teenitud tulu kätte. Madalapalgaliste maksuvabastuse rakendamisega ei kaotata ega piirata ühtegi muud seadusega lubatud tulust mahaarvamist.</p><p><i>Seame kõrgepalgaliste, nn tarkade töökohtade loomise soodustamiseks sotsiaalmaksule lae. Eesti keskmisest palgast kolm korda suurema palgaga töötaja palgalt tasutav sotsiaalmaks ei tohi Eestis olla kõrgem kui Soomes, Lätis või Suurbritannias.</i></p>
-		<h3>Sotsiaaldemokraatlik Erakond<sup><a href="http://valimised2015.sotsdem.ee/est/valimisprogramm">2</a></sup></h3>
-		<p>Soodustame noorte, õppurite, piiratud töövõimega inimestega ja eakate tööhõives osalemist, selleks langetame nende eest makstavat sotsiaalmaksu 13% võrra.</p>
-		<p>Regionaalsete töökohtade loomiseks langetame sotsiaalmaksumäära 33%-lt 30%-ni nende töötajate puhul, kelle elu- ja töökoht asuvad väljaspool Harjumaad.</p>
-		<p>Kehtestame täiendava tulumaksumäära (29%) tulule, mis ületab 1600 eurot kuus. Korrigeerime seda vastavalt keskmise palga tõusule.</p>
-		<p><i>Madalama ja keskmise sissetulekuga töötajate maksukoormuse vähendamiseks peame oluliseks tõsta tulumaksuvaba määra regulaarset nii palga kui ka pensionide puhul.</i></p>
-		<h3>Reformierakond<sup><a href="http://www.reform.ee/reformierakonna-valimisprogramm-2015-majandus">3</a></sup></h3>
-		<p>...kahekordistab tulumaksuvaba miinimumi määra, tõstes selle 300 euroni kuus.</p>
-		<p>...vähendab sotsiaalmaksu määra 2% võrra ja muudab selle maksmise ja sellega seotud sotsiaalsete garantiide saamise paindlikumaks.</p>
-		<h3>Eesti Konservatiivne Rahvaerakond<sup><a href="http://onaeg.ekre.ee/programm/">4</a></sup></h3>
-		<p>...kehtestada tulumaksupreemia, kus iga kasvatatava lapse pealt võetakse vanemalt 5% võrra väiksemat tulumaksu.</p>
-		<p>...tõsta maksuvaba miinimum miinimumpalgaga võrdseks.</p>
-		<h3>Keskerakond<sup><a href="http://www.keskerakond.ee/files/Keskerakonna_valimisplatvorm_2015__aasta_Riigikogu_valimisteks.pdf">5</a></sup></h3>
-		<p><i>Kehtestame euroopaliku astmelise tulumaksu. ... Tagame, et astmelise tulumaksu kehtestamisega ei suurene keskklassi maksukoormus.</i></p>
-		<p><i>Tõstame tulumaksuvaba miinimumi.</i></p>
-		<h3>Vabaerakond<sup><a href="http://vabaerakond.ee/eesti-vabaerakonna-luhike-valimisplatvorm">6</a></sup></h3>
-		<p><i>...tulumaksuvaba miinimum 500 euroni, kompenseerides puudujäägi eelarves tulumaksumäära tõusuga.</i></p>
-		<p><i>...alandada tööjõumakse ja kehtestada väiksem sotsiaalmaks, asendades selle riigieelarves ettevõtte tulumaksuga kuni 12%, seades eelduseks, et ettevõtte üldine maksukoormus ei muutu.</i></p>
-		
-		
-		</div>
-		</div>
-		<div id="authors">
-		<h1>Autorid</h1>
-		<p class="author"><a href="https://ee.linkedin.com/pub/taavi-pungas/a8/1b/635">Taavi Pungas</a> (idee ja meetod)</p>
-		<p class="author"><a href ="http://pungas.ee">Taivo Pungas</a> (tehniline teostus)</p>
-		<p>Autorid on näinud vaeva, et kalkulaator oleks erakondade valimisprogrammides esitatud maksulubadustega võimalikult täpses kooskõlas. Sellegipoolest ei saa kalkulaatori tulemusi käsitleda erakondade ametlike seisukohtadena. Vigadest või pretensioonidest palun teatada <a href="mailto:taavi.pungas@eesti.ee">siia</a>.</p>
-		<p>Käesolev töö on avaldatud litsentsi <a href="http://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> all.</p>
-		</div>
-		</div>
+		<script type="text/javascript" src="data.js"></script> <!-- Defines all party-related data -->
 		
 		<script type="text/javascript">
+			//Initialise variables with defaults
 			var children = 0;
 			var initialSalary = 800;
 			var salary = initialSalary;
 			var check1 = 0;
 			var check2 = 0;
 			var check3 = 1;
-			
 			var longTextIsOpen = false;
 			
 			//Set initial value in DOM
@@ -340,7 +165,7 @@
 			
 			//Close hiddenText
 			d3.select("div#longText").select("div#hiddenText").style("display", "none");
-		
+			
 			//Arvuta netopalk vastavalt argumentidele
 			netSalary = function(bruto, tm, maksuvaba, sammas) {
 				return bruto * (1 - 0.016 - sammas * 0.02) - Math.max(bruto * (1 - 0.016 - sammas * 0.02) - maksuvaba, 0) * tm;
@@ -356,200 +181,13 @@
 				return netSalary(bruto, 0.2, 154, sammas);
 			}
             
-			//Data defs
-			var currentTaxes = {
-				sm: 0,
-				tm: 0,
-				maksuvaba: 0,
-				netopalk: 0,
-				fun: function(bruto, lapsi, maal, soodusgrupp, sammas) { 
-					this.sm = 0.33;
-					this.tm = 0.2;
-					this.maksuvaba = 154;
-					this.netopalk = netSalary(bruto, this.tm, this.maksuvaba, sammas);
-					return this.netopalk - currentNet(bruto, sammas);
-				}
-			};
-			
-			var empty = {
-				sm: 0,
-				tm: 0,
-				maksuvaba: 0,
-				netopalk: 0,
-				fun: function(bruto, lapsi, maal, soodusgrupp, sammas) { 
-					return 0;
-				},
-				name: "",
-				abbr: "",
-				explain: "",
-				color: "#fff",
-				opacity: 0
-			};
-			
-			var ekre = {
-				sm: 0,
-				tm: 0,
-				maksuvaba: 0,
-				netopalk: 0,
-				fun: function(bruto, lapsi, maal, soodusgrupp, sammas) { 
-					this.sm = 0.33;
-					this.tm = Math.max(0, 0.2 - lapsi * 0.05);
-					this.maksuvaba = 390;
-					this.netopalk = netSalary(bruto, this.tm, this.maksuvaba, sammas);
-					return this.netopalk - currentNet(bruto, sammas);
-				},
-				name: "Eesti Konservatiivne Rahvaerakond",
-				abbr: "EKRE",
-				explain: "Sinu võit tulumaksult.",
-				color: "#0077bd",
-				opacity: 1
-			};
-			
-			var ekre_sm = {
-				sm: 0,
-				tm: 0,
-				maksuvaba: 0,
-				netopalk: 0,
-				fun: function(bruto, lapsi, maal, soodusgrupp, sammas) { 
-					this.sm = 0.33;
-					this.tm = Math.max(0, 0.2 - lapsi * 0.05);
-					this.maksuvaba = 390;
-					this.netopalk = netSalary(bruto, this.tm, this.maksuvaba, sammas);
-					return this.netopalk - currentNet(bruto, sammas);
-				},
-				name: "Eesti Konservatiivne Rahvaerakond*",
-				abbr: "EKRE*",
-				explain: "Sinu maksimaalne võimalik võit tulu- ja sotsiaalmaksult.",
-				color: "#0077bd",
-				opacity: 0.5
-			};
-			
-			var irl = {
-				sm: 0,
-				tm: 0,
-				maksuvaba: 0,
-				netopalk: 0,
-				fun: function(bruto, lapsi, maal, soodusgrupp, sammas) {
-					this.sm = 0.33;
-					this.tm = 0.2;
-					this.maksuvaba = Math.min(Math.max(1000 - bruto * (1 - 0.016 - sammas * 0.02), 154), 500);
-					this.netopalk = netSalary(bruto, this.tm, this.maksuvaba, sammas);
-					return this.netopalk - currentNet(bruto, sammas);
-				},			
-				name: "Isamaa ja Res Publica Liit",
-				abbr: "IRL",
-				explain: "Sinu võit tulumaksult.",
-				color: "#0095ce",
-				opacity: 1
-			};
-			
-			var irl_sm = {
-				sm: 0,
-				tm: 0,
-				maksuvaba: 0,
-				netopalk: 0,
-				fun: function(bruto, lapsi, maal, soodusgrupp, sammas) {
-					this.sm = 0.33;
-					this.tm = 0.2;
-					this.maksuvaba = Math.min(Math.max(1000 - bruto * (1 - 0.016 - sammas * 0.02), 154), 500);
-					this.netopalk = netSalary(bruto, this.tm, this.maksuvaba, sammas);
-					return this.netopalk - currentNet(bruto, sammas);
-				},			
-				name: "Isamaa ja Res Publica Liit*",
-				abbr: "IRL*",
-				explain: "Sinu maksimaalne võimalik võit tulu- ja sotsiaalmaksult.",
-				color: "#0095ce",
-				opacity: 0.5
-			};
-			
-			var reform = {
-				sm: 0,
-				tm: 0,
-				maksuvaba: 0,
-				netopalk: 0,
-				fun: function(bruto, lapsi, maal, soodusgrupp, sammas) {
-					this.sm = 0.31;
-					this.tm = 0.2;
-					this.maksuvaba = 300;
-					this.netopalk = netSalary(bruto, this.tm, this.maksuvaba, sammas);
-					return this.netopalk - currentNet(bruto, sammas);
-				},
-				name: "Reformierakond",
-				abbr: "RE",
-				explain: "Sinu võit tulumaksult.",
-				color: "#ffe200",
-				opacity: 1
-			};
-			
-			var reform_sm = {
-				sm: 0,
-				tm: 0,
-				maksuvaba: 0,
-				netopalk: 0,
-				fun: function(bruto, lapsi, maal, soodusgrupp, sammas) {
-					this.sm = 0.31;
-					this.tm = 0.2;
-					this.maksuvaba = 300;
-					var brutosm = bruto*1.338/(1.008 + this.sm);
-					this.netopalk = netSalary(brutosm, this.tm, this.maksuvaba, sammas);
-					return this.netopalk - currentNet(bruto, sammas);
-				},
-				name: "Reformierakond*",
-				abbr: "RE*",
-				explain: "Sinu maksimaalne võimalik võit tulu- ja sotsiaalmaksult.",
-				color: "#ffe200",
-				opacity: 0.5
-			};
-			
-			var sde = {
-				sm: 0,
-				tm: 0,
-				maksuvaba: 0,
-				netopalk: 0,
-				fun: function(bruto, lapsi, maal, soodusgrupp, sammas) {
-					this.sm = 0.33 - Math.max(0.03 * maal, 0.13 * soodusgrupp);
-					this.tm = (Math.max(bruto * (1 - 0.016 - sammas * 0.02) - 154, 0) * 0.20 + Math.max(bruto * (1 - 0.016 - sammas * 0.02) - 1600, 0)*0.09) / (bruto * (1 - 0.016 - sammas * 0.02) - 154);
-					this.maksuvaba = 154;
-					this.netopalk = netSalary(bruto, this.tm, this.maksuvaba, sammas);
-					return this.netopalk - currentNet(bruto, sammas);
-				},			
-				name: "Sotsiaaldemokraatlik Erakond",
-				abbr: "SDE",
-				explain: "Sinu võit tulumaksult.",
-				color: "#aa0b04",
-				opacity: 1
-			};
-			
-			var sde_sm = {
-				sm: 0,
-				tm: 0,
-				maksuvaba: 0,
-				netopalk: 0,
-				fun: function(bruto, lapsi, maal, soodusgrupp, sammas) {
-					this.sm = 0.33 - Math.max(0.03 * maal, 0.13 * soodusgrupp);
-					this.maksuvaba = 154;
-					var brutosm = bruto*1.338/(1.008 + this.sm);
-					this.tm = (Math.max(brutosm * (1 - 0.016 - sammas * 0.02) - 154, 0) * 0.20 + Math.max(brutosm * (1 - 0.016 - sammas * 0.02) - 1600, 0)*0.09) / (brutosm * (1 - 0.016 - sammas * 0.02) - 154);
-					this.netopalk = netSalary(brutosm, this.tm, this.maksuvaba, sammas);
-					return this.netopalk - currentNet(bruto, sammas);
-				},				
-				name: "Sotsiaaldemokraatlik Erakond*",
-				abbr: "SDE*",
-				explain: "Sinu maksimaalne võimalik võit tulu- ja sotsiaalmaksult.",
-				color: "#aa0b04",
-				opacity: 0.5
-			};
-			
-			erakonnad = [irl, irl_sm, empty, sde, sde_sm, empty, reform, reform_sm, empty, ekre, ekre_sm];
-		
-			//Initial values for dataset
+			//Initial values for dataset based on which the graph is drawn
 			dataset = [];
-			
 			for (var i = 0; i < erakonnad.length; i++) {
 				dataset.push(erakonnad[i].fun(salary, children, check1, check2, check3));
 			}
 			
-
+			
 			//Width and height
 			var w = 500;
 			var h = 300;
@@ -557,179 +195,177 @@
 			var paddingTop = 70;
 			var paddingLeft = 50;
 			var paddingRight = 20;
-
-			var xScale = d3.scale.ordinal()
-							.domain(d3.range(dataset.length))
-							.rangeRoundBands([paddingLeft, w-paddingRight], 0.05);
-
-			var yScale = d3.scale.linear()
-							.domain([Math.min(0, d3.min(dataset)), Math.max(d3.max(dataset), 0)])
-							.range([h-paddingBottom, paddingTop]);
 			
-							
+			var xScale = d3.scale.ordinal()
+			.domain(d3.range(dataset.length))
+			.rangeRoundBands([paddingLeft, w-paddingRight], 0.05);
+			
+			var yScale = d3.scale.linear()
+			.domain([Math.min(0, d3.min(dataset)), Math.max(d3.max(dataset), 0)])
+			.range([h-paddingBottom, paddingTop]);
+			
+			
 			//Define Y axis
 			var yAxis = d3.svg.axis()
-							  .scale(yScale)
-							  .orient("left")
-							  .tickFormat(function(d) { return d + "€"; })
-							  .ticks(4);
-							  
+			.scale(yScale)
+			.orient("left")
+			.tickFormat(function(d) { return d + "€"; })
+			.ticks(4);
+			
 			
 			//Create SVG element
 			var svg_graph = d3.select("svg#graph")
-						.attr("width", w)
-						.attr("height", h);
-						
+			.attr("width", w)
+			.attr("height", h);
+			
 			//Create title
-	
 			var titleX = d3.mean(xScale.range());
 			var titleText = svg_graph.append("text")
-				.attr("text-anchor", "middle")
-				.attr("x", titleX)
-				.attr("y", 30)
-				.style("font-size", "14px")
-				.style("font-weight", "bold");
+			.attr("text-anchor", "middle")
+			.attr("x", titleX)
+			.attr("y", 30)
+			.style("font-size", "14px")
+			.style("font-weight", "bold");
 			
 			titleText.append("tspan")
-				.attr("x", titleX)
-				.text("Sinu igakuine võit tulumaksult (iga erakonna vasak tulp) ning");
-				
+			.attr("x", titleX)
+			.text("Sinu igakuine võit tulumaksult (iga erakonna vasak tulp) ning");
+			
 			titleText.append("tspan")
-				.attr("x", titleX)
-				.attr("dy", 20)
-				.text("maksimaalne võimalik võit sotsiaal- ja tulumaksult (parem tulp).");
-						
+			.attr("x", titleX)
+			.attr("dy", 20)
+			.text("maksimaalne võimalik võit sotsiaal- ja tulumaksult (parem tulp).");
+			
 			// Create y=0 line
 			var y0Line = d3.select("svg#graph")
-				.append("line")
-				.attr("x1", paddingLeft)
-				.attr("x2", w-paddingRight)
-				.attr("y1", yScale(0))
-				.attr("y2", yScale(0))
-				.attr("style", "stroke:#bbb;stroke-width:1;shape-rendering: crispEdges");
-				
-				
+			.append("line")
+			.attr("x1", paddingLeft)
+			.attr("x2", w-paddingRight)
+			.attr("y1", yScale(0))
+			.attr("y2", yScale(0))
+			.attr("style", "stroke:#bbb;stroke-width:1;shape-rendering: crispEdges");
+			
+			
 			//Create bar labels
 			svg_graph.selectAll(".labelText")
-			   .data(erakonnad.map(function(d) { return d.abbr; }))
-			   .enter()
-			   .append("text")
-			   .text(function(d, i) { return d; })
-			   .attr("text-anchor", "middle")
-			   .attr("x", function(d, i) {
-					console.log(i + " " + d);
-			   		return xScale(i) + 0.5 * xScale.rangeBand();
-			   })
-			   .attr("style", function(d, i) {
-						if (erakonnad[i].abbr == "EKRE" || erakonnad[i].abbr == "EKRE*")
-							return "font-size: 13px;";
-						else
-							return "";
-				   })
-			   .attr("y", h-15);
-
+			.data(erakonnad.map(function(d) { return d.abbr; }))
+			.enter()
+			.append("text")
+			.text(function(d, i) { return d; })
+			.attr("text-anchor", "middle")
+			.attr("x", function(d, i) {
+				return xScale(i) + 0.5 * xScale.rangeBand();
+			})
+			.attr("style", function(d, i) {
+				if (erakonnad[i].abbr == "EKRE" || erakonnad[i].abbr == "EKRE*")
+				return "font-size: 13px;";
+				else
+				return "";
+			})
+			.attr("y", h-15);
+			
 			//Create bars
 			svg_graph.selectAll("rect")
-			   .data(dataset)
-			   .enter()
-			   .append("rect")
-			   .attr("x", function(d, i) {
-			   		return xScale(i);
-			   })
-			   .attr("width", xScale.rangeBand())
-			   .attr("y", function(d) {
-					if (d >= 0)
-						return yScale(d);
-					else
-						return yScale(0);
-			   })
-			   .attr("height", function(d) {
-					return Math.abs(yScale(0) - yScale(d));
-			   })
-			   .attr("fill", function(d, i) {
-					return erakonnad[i].color;
-			   })
-			   .attr("style", function(d, i) { return "opacity:"+erakonnad[i].opacity+";"; })
-			   .on("mouseover", function(d, i) {
-
-					//Get this bar's x/y values, then augment for the tooltip
-					var xPosition = parseFloat(d3.select(this).attr("x")) + xScale.rangeBand() / 2 - 210;
-					var yPosition = parseFloat(d3.select(this).attr("y")) / 2 + h/2;
-
-					//Update the tooltip position and values
-					d3.select("#tooltip")
-						.style("left", xPosition + "px")
-						.style("top", yPosition + "px")						
-						.select("#value")
-						.text(Math.round(dataset[i]));
-					
-					//Party name
-					d3.select("#tooltip").select("strong")
-						.text(erakonnad[i].name);
-						
-					//Explanatory text
-					if(erakonnad[i].explain == null) {	// if string is not defined
-						d3.select("#tooltip").select("#explainText")
-							.attr("style", "display:none;")
+			.data(dataset)
+			.enter()
+			.append("rect")
+			.attr("x", function(d, i) {
+				return xScale(i);
+			})
+			.attr("width", xScale.rangeBand())
+			.attr("y", function(d) {
+				if (d >= 0)
+				return yScale(d);
+				else
+				return yScale(0);
+			})
+			.attr("height", function(d) {
+				return Math.abs(yScale(0) - yScale(d));
+			})
+			.attr("fill", function(d, i) {
+				return erakonnad[i].color;
+			})
+			.attr("style", function(d, i) { return "opacity:"+erakonnad[i].opacity+";"; })
+			.on("mouseover", function(d, i) {
+				
+				//Get this bar's x/y values, then augment for the tooltip
+				var xPosition = parseFloat(d3.select(this).attr("x")) + xScale.rangeBand() / 2 - 210;
+				var yPosition = parseFloat(d3.select(this).attr("y")) / 2 + h/2;
+				
+				//Update the tooltip position and values
+				d3.select("#tooltip")
+				.style("left", xPosition + "px")
+				.style("top", yPosition + "px")						
+				.select("#value")
+				.text(Math.round(dataset[i]));
+				
+				//Party name
+				d3.select("#tooltip").select("strong")
+				.text(erakonnad[i].name);
+				
+				//Explanatory text
+				if(erakonnad[i].explain == null) {	// if string is not defined
+					d3.select("#tooltip").select("#explainText")
+					.attr("style", "display:none;")
 					} else {
-						d3.select("#tooltip").select("#explainText")
-							.text(erakonnad[i].explain)
-							.attr("style", "display:inline;");
-					}
-			   
-					//Show the tooltip
-					d3.select("#tooltip").classed("hidden", false);
-					
-					//Set opacity to 1 on hover
-					d3.select(this).attr("style", "opacity: 1.0;");
-					
-					//Highlight relevant table cells
-					var selector = erakonnad[i].abbr.replace('*', '').toLowerCase();
-					d3.select("table").selectAll("." + selector)
-						.attr("style", "background-color: #eee");
-
-			   })
-			   .on("mouseout", function(d, i) {
-			   
-					//Hide the tooltip
-					d3.select("#tooltip").classed("hidden", true);
-					
-					//Return opacity to correct value on hover end
-					d3.select(this).attr("style", "opacity:"+erakonnad[i].opacity+";");
-					
-					//Un-highlight table cell
-					var selector = erakonnad[i].abbr.replace('*', '').toLowerCase();
-					d3.select("table").selectAll("." + selector)
-						.attr("style", "background-color: #fff");
-					
-			   });
-			   
+					d3.select("#tooltip").select("#explainText")
+					.text(erakonnad[i].explain)
+					.attr("style", "display:inline;");
+				}
+				
+				//Show the tooltip
+				d3.select("#tooltip").classed("hidden", false);
+				
+				//Set opacity to 1 on hover
+				d3.select(this).attr("style", "opacity: 1.0;");
+				
+				//Highlight relevant table cells
+				var selector = erakonnad[i].abbr.replace('*', '').toLowerCase();
+				d3.select("table").selectAll("." + selector)
+				.attr("style", "background-color: #eee");
+				
+			})
+			.on("mouseout", function(d, i) {
+				
+				//Hide the tooltip
+				d3.select("#tooltip").classed("hidden", true);
+				
+				//Return opacity to correct value on hover end
+				d3.select(this).attr("style", "opacity:"+erakonnad[i].opacity+";");
+				
+				//Un-highlight table cell
+				var selector = erakonnad[i].abbr.replace('*', '').toLowerCase();
+				d3.select("table").selectAll("." + selector)
+				.attr("style", "background-color: #fff");
+				
+			});
+			
 			//Create Y axis
 			svg_graph.append("g")
-				.attr("class", "y axis")
-				.attr("transform", "translate(" + paddingLeft + ",0)")
-				.call(yAxis);
+			.attr("class", "y axis")
+			.attr("transform", "translate(" + paddingLeft + ",0)")
+			.call(yAxis);
 			
 			//Catch checkbox updates
 			d3.select("#checkbox1").on("change", function() {
 				if (this.checked)
-					check1 = 1;
+				check1 = 1;
 				else
-					check1 = 0;
+				check1 = 0;
 				updateGraph(salary, children, check1, check2, check3);
 			});
 			d3.select("#checkbox2").on("change", function() {
 				if (this.checked)
-					check2 = 1;
+				check2 = 1;
 				else
-					check2 = 0;
+				check2 = 0;
 				updateGraph(salary, children, check1, check2, check3);
 			});
 			d3.select("#checkbox3").on("change", function() {
 				if (this.checked)
-					check3 = 1;
+				check3 = 1;
 				else
-					check3 = 0;
+				check3 = 0;
 				updateGraph(salary, children, check1, check2, check3);
 			});
 			
@@ -740,237 +376,227 @@
 				else children = valIn;
 				updateGraph(salary, children, check1, check2, check3);
 			});
-
 			
+			// Slider settings and creation			
+			var margin = {top: 0, right: 15, bottom: 0, left: 10},
+			width = 400,
+			height = 40 - margin.bottom - margin.top;
+			
+			var x = d3.scale.linear()
+			.domain([390, 5000])
+			.range([0, width])
+			.clamp(true);
+			
+			var brush = d3.svg.brush()
+			.x(x)
+			.extent([0, 0])
+			.on("brush", brushed);
+			
+			var svg2 = d3.select("svg#slider")
+			.attr("width", width + margin.left + margin.right)
+			.attr("height", height + margin.top + margin.bottom)
+			.append("g")
+			.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+			
+			svg2.append("g")
+			.attr("class", "x axis_slider")
+			.attr("transform", "translate(0," + height / 2 + ")")
+			.call(d3.svg.axis()
+			.scale(x)
+			.orient("bottom")
+			.tickFormat(function(d) { return d + "€"; })
+			.tickSize(0)
+			.tickPadding(12))
+			.select(".domain")
+			.select(function() { return this.parentNode.appendChild(this.cloneNode(true)); })
+			.attr("class", "halo");
+			
+			var slider = svg2.append("g")
+			.attr("class", "slider")
+			.call(brush);
+			
+			slider.selectAll(".extent,.resize")
+			.remove();
+			
+			var handle = slider.append("circle")
+			.attr("class", "handle")
+			.attr("transform", "translate(0," + height / 2 + ")")
+			.attr("r", 9);
+			
+			slider
+			.call(brush.event)
+			.call(brush.extent([initialSalary, initialSalary]))
+			.call(brush.event);
+			
+			function updateTableSalaryAndGain() {
+				//Update net salaries
+				var tr = d3.select("table").select("tr#netSalary");
+				var currentNet = currentTaxes.netopalk;
+				tr.select(".now").text(Math.round(currentNet) + "€");
+				tr.select(".irl").text(Math.round(irl.netopalk) + "€");
+				tr.select(".ekre").text(Math.round(ekre.netopalk) + "€");
+				
+				//Update net salaries for parties with ranges
+				//SDE
+				if(Math.abs(sde.netopalk - sde_sm.netopalk) > 1) {
+					var sde_smaller = Math.round(Math.min(sde.netopalk, sde_sm.netopalk));
+					var sde_larger = Math.round(Math.max(sde.netopalk, sde_sm.netopalk));
+					var sdeText = sde_smaller + "..." + sde_larger + "€";
+					} else {
+					var sdeText = Math.round(sde.netopalk) + "€";
+				}
+				tr.select(".sde").text(sdeText);
+				//Reform
+				if(Math.abs(reform.netopalk - reform_sm.netopalk) > 1) {
+					var ref_smaller = Math.round(Math.min(reform.netopalk, reform_sm.netopalk));
+					var ref_larger = Math.round(Math.max(reform.netopalk, reform_sm.netopalk));
+					var refText = ref_smaller + "..." + ref_larger + "€";
+					} else {
+					var refText = Math.round(reform.netopalk) + "€";
+				}
+				tr.select(".re").text(refText);
+				
+				
+				//Update gains
+				var tr = d3.select("table").select("tr#gain");
+				tr.select(".now").text(0 + "€");
+				tr.select(".irl").text(Math.round(irl.netopalk - currentNet) + "€");
+				tr.select(".ekre").text(Math.round(ekre.netopalk - currentNet) + "€");
+				
+				//Update gains for parties with ranges
+				//SDE
+				var sde_gain = sde.netopalk - currentNet;
+				var sde_sm_gain = sde_sm.netopalk - currentNet;
+				if(Math.abs(sde_gain - sde_sm_gain) > 1) {
+					var sde_smaller = Math.round(Math.min(sde_gain, sde_sm_gain));
+					var sde_larger = Math.round(Math.max(sde_gain, sde_sm_gain));
+					var sdeText = sde_smaller + "..." + sde_larger  + "€";
+					} else {
+					var sdeText = Math.round(sde_gain)  + "€";
+				}
+				tr.select(".sde").text(sdeText);
+				
+				//Reform
+				var ref_gain = reform.netopalk - currentNet;
+				var ref_sm_gain = reform_sm.netopalk - currentNet;
+				if(Math.abs(ref_gain - ref_sm_gain) > 1) {
+					var ref_smaller = Math.round(Math.min(ref_gain, ref_sm_gain));
+					var ref_larger = Math.round(Math.max(ref_gain, ref_sm_gain));
+					var refText = ref_smaller + "..." + ref_larger  + "€";
+					} else {
+					var refText = Math.round(ref_gain)  + "€";
+				}
+				tr.select(".re").text(refText);
+			}
+			
+			function updateTableTaxNumbers() {
+				var tr = d3.select("table").select("tr#taxNumbers");
+				tr.select(".now").html(Math.round(currentTaxes.maksuvaba) + "€<br />" + currentTaxes.tm.toFixed(2)*100 + "%<br />" + currentTaxes.sm.toFixed(2)*100 + "%");
+				tr.select(".irl").html(Math.round(irl.maksuvaba) + "€<br />" + irl.tm.toFixed(2)*100 + "%<br />" + irl.sm.toFixed(2)*100 + "%");
+				tr.select(".sde").html(Math.round(sde.maksuvaba) + "€<br />" + sde.tm.toFixed(2)*100 + "%<br />" + sde.sm.toFixed(2)*100 + "%");
+				tr.select(".re").html(Math.round(reform.maksuvaba) + "€<br />" + reform.tm.toFixed(2)*100 + "%<br />" + reform.sm.toFixed(2)*100 + "%");
+				tr.select(".ekre").html(Math.round(ekre.maksuvaba) + "€<br />" + ekre.tm.toFixed(2)*100 + "%<br />" + ekre.sm.toFixed(2)*100 + "%");
+				
+			}
+			
+			function updateGraph(salary, children, check1, check2, check3) {
+				
+				//Update freetext selector
+				d3.select("#bruto_display")		// update freetext salary input
+				.text(salary);
+				
+				//New values for dataset
+				var numValues = dataset.length;						//Count original length of dataset
+				dataset = [];  						 				//Initialize empty array
+				for (var i = 0; i < numValues; i++) {				//Loop numValues times
+					dataset.push(erakonnad[i].fun(salary, children, check1, check2, check3));
+				}
+				
+				//Update y scale domain
+				yScale.domain([Math.min(0, d3.min(dataset)), Math.max(d3.max(dataset), 0)]);
+				
+				
+				//Update all rects
+				svg_graph.selectAll("rect")
+				.data(dataset)
+				.transition()
+				.delay(function(d, i) {
+					return i / dataset.length * 50;
+				})
+				.duration(500)
+				.attr("y", function(d) {
+					if (d >= 0)
+					return yScale(d);
+					else
+					return yScale(0);
+				})
+				.attr("height", function(d) {
+					return Math.abs(yScale(0) - yScale(d));
+				})
+				.attr("fill", function(d, i) {
+					return erakonnad[i].color;
+				});
+				
+				//Update Y axis
+				svg_graph.select(".y.axis")
+				.transition()
+				.duration(500)
+				.call(yAxis);
+				
+				//Update Y=0 line
+				y0Line
+				.transition()
+				.duration(500)
+				.attr("y1", yScale(0))
+				.attr("y2", yScale(0))
+				
+				//Call the function of 'currentTaxes' object so its fields are updated
+				currentTaxes.fun(salary, children, check1, check2, check3);
+				
+				//Update table
+				updateTableSalaryAndGain();
+				updateTableTaxNumbers();
+			}
+			
+			function brushed() {
+				salary = brush.extent()[0];
+				
+				if (d3.event.sourceEvent) { // not a programmatic event
+					salary = x.invert(d3.mouse(this)[0]);
+					brush.extent([salary, salary]);
+				}
+				
+				salary = Math.round(salary / 10) * 10;	// round to nearest 10
+				
+				handle.attr("cx", x(salary));
+				updateGraph(salary, children, check1, check2, check3);
+			}
+			
+			//Open and close hidden text on click
+			d3.select("div#longText").select("p#openHiddenText")
+			.on("click", function() {
+				var longText = d3.select("div#longText").select("div#hiddenText");
+				if (longTextIsOpen) {
+					longText.style("display", "none");
+					longTextIsOpen = false;
+					} else {
+					longText.style("display", "inline");
+					longText.attr("style", "margin-left: 0px; margin-right: 0px; padding: 15px 20px 15px 20px; background-color: #eee;");
+					longTextIsOpen = true;
+				}
+			});
 		</script>
 		
-		<script>
-	var margin = {top: 0, right: 15, bottom: 0, left: 10},
-		width = 400,
-		height = 40 - margin.bottom - margin.top;
-
-	var x = d3.scale.linear()
-		.domain([390, 5000])
-		.range([0, width])
-		.clamp(true);
-
-	var brush = d3.svg.brush()
-		.x(x)
-		.extent([0, 0])
-		.on("brush", brushed);
-
-	var svg2 = d3.select("svg#slider")
-		.attr("width", width + margin.left + margin.right)
-		.attr("height", height + margin.top + margin.bottom)
-	  .append("g")
-		.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-	svg2.append("g")
-		.attr("class", "x axis_slider")
-		.attr("transform", "translate(0," + height / 2 + ")")
-		.call(d3.svg.axis()
-		  .scale(x)
-		  .orient("bottom")
-		  .tickFormat(function(d) { return d + "€"; })
-		  .tickSize(0)
-		  .tickPadding(12))
-	  .select(".domain")
-	  .select(function() { return this.parentNode.appendChild(this.cloneNode(true)); })
-		.attr("class", "halo");
-
-	var slider = svg2.append("g")
-		.attr("class", "slider")
-		.call(brush);
-
-	slider.selectAll(".extent,.resize")
-		.remove();
-
-	var handle = slider.append("circle")
-		.attr("class", "handle")
-		.attr("transform", "translate(0," + height / 2 + ")")
-		.attr("r", 9);
-		
-	slider
-		.call(brush.event)
-		.call(brush.extent([initialSalary, initialSalary]))
-		.call(brush.event);
-		
-	function updateTableSalaryAndGain() {
-		//Update net salaries
-		var tr = d3.select("table").select("tr#netSalary");
-		var currentNet = currentTaxes.netopalk;
-		tr.select(".now").text(Math.round(currentNet) + "€");
-		tr.select(".irl").text(Math.round(irl.netopalk) + "€");
-		tr.select(".ekre").text(Math.round(ekre.netopalk) + "€");
-		
-		//Update net salaries for parties with ranges
-		//SDE
-		if(Math.abs(sde.netopalk - sde_sm.netopalk) > 1) {
-			var sde_smaller = Math.round(Math.min(sde.netopalk, sde_sm.netopalk));
-			var sde_larger = Math.round(Math.max(sde.netopalk, sde_sm.netopalk));
-			var sdeText = sde_smaller + "..." + sde_larger + "€";
-		} else {
-			var sdeText = Math.round(sde.netopalk) + "€";
-		}
-		tr.select(".sde").text(sdeText);
-		//Reform
-		if(Math.abs(reform.netopalk - reform_sm.netopalk) > 1) {
-			var ref_smaller = Math.round(Math.min(reform.netopalk, reform_sm.netopalk));
-			var ref_larger = Math.round(Math.max(reform.netopalk, reform_sm.netopalk));
-			var refText = ref_smaller + "..." + ref_larger + "€";
-		} else {
-			var refText = Math.round(reform.netopalk) + "€";
-		}
-		tr.select(".re").text(refText);
-		
-		
-		//Update gains
-		var tr = d3.select("table").select("tr#gain");
-		tr.select(".now").text(0 + "€");
-		tr.select(".irl").text(Math.round(irl.netopalk - currentNet) + "€");
-		tr.select(".ekre").text(Math.round(ekre.netopalk - currentNet) + "€");
-		
-		//Update gains for parties with ranges
-		//SDE
-		var sde_gain = sde.netopalk - currentNet;
-		var sde_sm_gain = sde_sm.netopalk - currentNet;
-		if(Math.abs(sde_gain - sde_sm_gain) > 1) {
-			var sde_smaller = Math.round(Math.min(sde_gain, sde_sm_gain));
-			var sde_larger = Math.round(Math.max(sde_gain, sde_sm_gain));
-			var sdeText = sde_smaller + "..." + sde_larger  + "€";
-		} else {
-			var sdeText = Math.round(sde_gain)  + "€";
-		}
-		tr.select(".sde").text(sdeText);
-		
-		//Reform
-		var ref_gain = reform.netopalk - currentNet;
-		var ref_sm_gain = reform_sm.netopalk - currentNet;
-		if(Math.abs(ref_gain - ref_sm_gain) > 1) {
-			var ref_smaller = Math.round(Math.min(ref_gain, ref_sm_gain));
-			var ref_larger = Math.round(Math.max(ref_gain, ref_sm_gain));
-			var refText = ref_smaller + "..." + ref_larger  + "€";
-		} else {
-			var refText = Math.round(ref_gain)  + "€";
-		}
-		tr.select(".re").text(refText);
-	}
-	
-	function updateTableTaxNumbers() {
-		var tr = d3.select("table").select("tr#taxNumbers");
-		tr.select(".now").html(Math.round(currentTaxes.maksuvaba) + "€<br />" + currentTaxes.tm.toFixed(2)*100 + "%<br />" + currentTaxes.sm.toFixed(2)*100 + "%");
-		tr.select(".irl").html(Math.round(irl.maksuvaba) + "€<br />" + irl.tm.toFixed(2)*100 + "%<br />" + irl.sm.toFixed(2)*100 + "%");
-		tr.select(".sde").html(Math.round(sde.maksuvaba) + "€<br />" + sde.tm.toFixed(2)*100 + "%<br />" + sde.sm.toFixed(2)*100 + "%");
-		tr.select(".re").html(Math.round(reform.maksuvaba) + "€<br />" + reform.tm.toFixed(2)*100 + "%<br />" + reform.sm.toFixed(2)*100 + "%");
-		tr.select(".ekre").html(Math.round(ekre.maksuvaba) + "€<br />" + ekre.tm.toFixed(2)*100 + "%<br />" + ekre.sm.toFixed(2)*100 + "%");
-		
-	}
-	
-	function updateGraph(salary, children, check1, check2, check3) {
-	
-		//Update freetext selector
-		d3.select("#bruto_display")		// update freetext salary input
-		.text(salary);
-	
-		//console.log("updating graph");
-		
-		//New values for dataset
-		var numValues = dataset.length;						//Count original length of dataset
-		dataset = [];  						 				//Initialize empty array
-		for (var i = 0; i < numValues; i++) {				//Loop numValues times
-			dataset.push(erakonnad[i].fun(salary, children, check1, check2, check3));
-		}
-
-		//Update y scale domain
-		yScale.domain([Math.min(0, d3.min(dataset)), Math.max(d3.max(dataset), 0)]);
-		
-		
-		//Update all rects
-		svg_graph.selectAll("rect")
-		   .data(dataset)
-		   .transition()
-		   .delay(function(d, i) {
-			   return i / dataset.length * 100;
-		   })
-		   .duration(500)
-		   .attr("y", function(d) {
-				if (d >= 0)
-					return yScale(d);
-				else
-					return yScale(0);
-		   })
-		   .attr("height", function(d) {
-				return Math.abs(yScale(0) - yScale(d));
-		   })
-		   .attr("fill", function(d, i) {
-				return erakonnad[i].color;
-		   });
-		   
-		//Update Y axis
-		svg_graph.select(".y.axis")
-			.transition()
-			.duration(500)
-		.call(yAxis);
-		
-		//Update Y=0 line
-		y0Line
-			.transition()
-			.duration(500)
-			.attr("y1", yScale(0))
-			.attr("y2", yScale(0))
-		
-		//Call the function of 'currentTaxes' object so its fields are updated
-		currentTaxes.fun(salary, children, check1, check2, check3);
-		
-		//Update table
-		updateTableSalaryAndGain();
-		updateTableTaxNumbers();
-		}
-
-	function brushed() {
-	  salary = brush.extent()[0];
-
-	  if (d3.event.sourceEvent) { // not a programmatic event
-		salary = x.invert(d3.mouse(this)[0]);
-		brush.extent([salary, salary]);
-	  }
-
-	  salary = Math.round(salary / 10) * 10;	// round to nearest 10
-	  
-	  handle.attr("cx", x(salary));
-	  updateGraph(salary, children, check1, check2, check3);
-	}
-	
-	//Open and close hidden text on click
-	d3.select("div#longText").select("p#openHiddenText")
-		.on("click", function() {
-			console.log(longTextIsOpen);
-			var longText = d3.select("div#longText").select("div#hiddenText");
-			if (longTextIsOpen) {
-				longText.style("display", "none");
-				longTextIsOpen = false;
-			} else {
-				longText.style("display", "inline");
-				longText.attr("style", "margin-left: 0px; margin-right: 0px; padding: 15px 20px 15px 20px; background-color: #eee;");
-				longTextIsOpen = true;
-			}
-		});
-	</script>
-	
-	
-	<script> 
-		// Browser update notification
-		var $buoop = {c:2}; 
-		function $buo_f(){ 
-		 var e = document.createElement("script"); 
-		 e.src = "//browser-update.org/update.js"; 
-		 document.body.appendChild(e);
-		};
-		try {document.addEventListener("DOMContentLoaded", $buo_f,false)}
-		catch(e){window.attachEvent("onload", $buo_f)}
-	</script> 
-	
-	
-
+		<script> 
+			// Browser update notification
+			var $buoop = {c:2}; 
+			function $buo_f(){ 
+				var e = document.createElement("script"); 
+				e.src = "//browser-update.org/update.js"; 
+				document.body.appendChild(e);
+			};
+			try {document.addEventListener("DOMContentLoaded", $buo_f,false)}
+			catch(e){window.attachEvent("onload", $buo_f)}
+		</script> 
 	</body>
 </html>
